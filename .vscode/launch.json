@@ -6,9 +6,9 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Websocket Server App",
+            "name": "Chat Websocket Server",
             "request": "launch",
-            "mainClass": "nl.fhict.ChatBox.App",
+            "mainClass": "Connector.CommunicatorServer",
             "projectName": "MessageService"
         }
     ]

@@ -1,4 +1,4 @@
-package Connector;
+
 
 import Utilities.ChatLogger;
 import Utilities.PropertiesLoader;
@@ -11,6 +11,8 @@ import javax.servlet.DispatcherType;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainerInitializer;
+
+import Connector.CommunicatorServerWebSocketEndpoint;
 
 import javax.websocket.server.ServerContainer;
 import java.util.Date;

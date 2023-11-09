@@ -56,7 +56,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>nl.fhict.ChatBox.App</mainClass>
+                            <mainClass>CommunicatorServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -2,6 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "C#: CharacterService Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/CharacterService/CharacterService.csproj"
+        },
+      {
             "type": "java",
             "name": "Chat Websocket Server",
             "request": "launch",

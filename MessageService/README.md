@@ -1,0 +1,14 @@
+# MessageService
+
+A Java application using Maven as its package manager.
+Runs on port 8095 by default.
+
+## Building binaries
+
+Navigate to the ``MessageService/`` directory in your CLI and in run ``mvn clean compile assembly:single``.
+
+The .jar file will then be placed in the ``MessageService/target/`` directory.
+
+## Docker Container
+
+``docker build --tag messageservice .``

@@ -44,15 +44,15 @@ class CharacterStoreMock : ICharacterStore
 
     public Character UpdateCharacter(Character updatedChar, string charID)
     {
-        if (characterStore.TryGetValue(charID,out _))
+        Character oldCharacter = GetCharacter(charID);
+        if(oldCharacter != updatedChar)
         {
             characterStore[charID] = updatedChar;
-            return updatedChar;
         }
-        throw new KeyNotFoundException("The character with ID " + charID +" does not exist.");
+        return updatedChar;
     }
 
-    public static string RandomString(int length)
+    static string RandomString(int length)
     {
     return new string(Enumerable.Repeat(hashChars, length)
         .Select(s => s[random.Next(s.Length)]).ToArray());

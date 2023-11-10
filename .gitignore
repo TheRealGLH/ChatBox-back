@@ -80,3 +80,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,windows
+
+#We don't need this but some editors automatically generate this.
+ChatBox-backend.sln

@@ -81,5 +81,6 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,windows
 
-#We don't need this but some editors automatically generate this.
-ChatBox-backend.sln
+#We don't need this solution file in this solution project but some editors automatically generate it.
+#The project directories are simply their own applications inside subdirectories in a single git repo. Not libraries for a grander project.
+/*.sln

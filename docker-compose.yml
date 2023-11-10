@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  messager:
+    build:
+      context: ./MessageService
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8095"
+  character:
+    build:
+      context: ./CharacterService
+      dockerfile: Dockerfile
+    ports:
+      - "8002:80"
+    #env_file:
+    #  - ./question/.env

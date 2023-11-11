@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "6ydmNwSGz/g1wEMJTr2KyZWUlZGF47uRVtvZ8pGFx4lxYmBrKLHBb21GiMO0CDAcekxzui6+14y4t7m9zG7j5g==",
+  "success": true,
+  "projectFilePath": "/Users/martijndaniels/Code/School/S6/ChatBox-backend/AvatarService/AvatarService.csproj",
+  "expectedPackageFiles": [
+    "/Users/martijndaniels/.nuget/packages/microsoft.aspnetcore.openapi/7.0.3/microsoft.aspnetcore.openapi.7.0.3.nupkg.sha512",
+    "/Users/martijndaniels/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/Users/martijndaniels/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/martijndaniels/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "/Users/martijndaniels/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "/Users/martijndaniels/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "/Users/martijndaniels/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.4.0/swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}

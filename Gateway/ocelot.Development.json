@@ -5,7 +5,7 @@
         "DownstreamScheme": "http",
         "DownstreamHostAndPorts": [
             {
-                "Host": "character-service",
+                "Host": "localhost",
                 "Port": 5087
             }
         ],

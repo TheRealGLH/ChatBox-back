@@ -1,17 +1,24 @@
 version: "3.8"
 
 services:
-  chatmessenger:
+  gateway-service:
+    build:
+      context: ./Gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+  chatmessenger-service:
     build:
       context: ./MessageService
       dockerfile: Dockerfile
     ports:
       - "8001:8095"
-  character:
+  character-service:
     build:
       context: ./CharacterService
       dockerfile: Dockerfile
     ports:
       - "8002:80"
+      #TODO Set things like the locations as environment vars
     #env_file:
     #  - ./question/.env

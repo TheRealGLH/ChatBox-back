@@ -9,6 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="Ocelot" Version="20.0.0" />
+    <None Update="ocelot.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+      <None Update="ocelot.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

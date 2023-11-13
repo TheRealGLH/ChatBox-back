@@ -6,7 +6,7 @@
         "DownstreamHostAndPorts": [
             {
                 "Host": "character-service",
-                "Port": 5087
+                "Port": 80
             }
         ],
         "UpstreamPathTemplate": "/character"

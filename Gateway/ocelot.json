@@ -1,0 +1,18 @@
+{
+    "Routes": [
+        {
+        "DownstreamPathTemplate": "/character/",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+            {
+                "Host": "localhost",
+                "Port": 5087
+            }
+        ],
+        "UpstreamPathTemplate": "/character"
+        }
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:5000"
+    }
+}

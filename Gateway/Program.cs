@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +35,7 @@ namespace OcelotBasic
             .UseIISIntegration()
             .Configure(app =>
             {
+                app.UseWebSockets();
                 app.UseOcelot().Wait();
             })
             .Build()

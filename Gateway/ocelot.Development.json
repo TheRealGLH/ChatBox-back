@@ -10,9 +10,17 @@
             }
         ],
         "UpstreamPathTemplate": "/character"
-        }
+        },
+        {
+            "UpstreamPathTemplate": "/chat",
+            "DownstreamPathTemplate": "/chat",
+            "DownstreamScheme": "ws",
+            "DownstreamHostAndPorts": [
+              { "Host": "localhost", "Port": 8095 }
+            ]
+          }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:5000"
+        "BaseUrl": "http://localhost:80"
     }
 }

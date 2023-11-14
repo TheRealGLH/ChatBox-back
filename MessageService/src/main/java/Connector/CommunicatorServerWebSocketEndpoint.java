@@ -3,7 +3,6 @@ package Connector;
 import Interfaces.ClientMessager;
 import Interfaces.ServerMessager;
 import Messages.Client.ClientMessage;
-import Messages.Client.ClientMessageText;
 import Messages.Server.ServerMessageText;
 import Utilities.ChatLogger;
 import com.google.gson.Gson;
@@ -15,8 +14,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 
-@ServerEndpoint(value = "/chat/")
-public class CommunicatorServerWebSocketEndpoint {
+@ServerEndpoint("/chat")
+public class CommunicatorServerWebSocketEndpoint{
 
     // All sessions
     private static Map<Session, ClientMessager> sessionClientMessagerMap = new HashMap<>();

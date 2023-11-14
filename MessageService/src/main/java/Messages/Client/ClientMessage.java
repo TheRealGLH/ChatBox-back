@@ -1,6 +1,6 @@
 package Messages.Client;
 
-public abstract class ClientMessage {
+public class ClientMessage {
     MessageType messageType;
 
     public void setMessageType(MessageType messageType){

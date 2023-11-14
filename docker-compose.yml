@@ -11,38 +11,38 @@ services:
     build:
       context: ./MessageService
       dockerfile: Dockerfile
-    ports:
-      - "8001:8095"
+#    ports:
+#      - "8001:8095"
   character-service:
     build:
       context: ./CharacterService
       dockerfile: Dockerfile
-    ports:
-      - "8002:80"
+#    ports:
+#      - "8002:80"
   avatar-service:
     build:
       context: ./AvatarService
       dockerfile: Dockerfile
-    ports:
-      - "8003:80"
+#    ports:
+#      - "8003:80"
   bookmark-service:
     build:
       context: ./BookmarkService
       dockerfile: Dockerfile
-    ports:
-      - "8004:80"
+#    ports:
+#      - "8004:80"
   profile-service:
     build:
       context: ./ProfileService
       dockerfile: Dockerfile
-    ports:
-      - "8005:80"
+#    ports:
+#      - "8005:80"
   report-service:
     build:
       context: ./ReportService
       dockerfile: Dockerfile
-    ports:
-      - "8006:80"
+#    ports:
+#      - "8006:80"
       #TODO Set things like the locations as environment vars
     #env_file:
     #  - ./question/.env

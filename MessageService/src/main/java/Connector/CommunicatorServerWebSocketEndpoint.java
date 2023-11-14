@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 
-@ServerEndpoint(value = "/chat/")
-public class CommunicatorServerWebSocketEndpoint {
+@ServerEndpoint("/chat")
+public class CommunicatorServerWebSocketEndpoint{
 
     // All sessions
     private static Map<Session, ClientMessager> sessionClientMessagerMap = new HashMap<>();

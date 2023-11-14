@@ -3,7 +3,12 @@ package Connector;
 import Utilities.ChatLogger;
 import com.google.gson.Gson;
 import Interfaces.ClientMessager;
+import Messages.Client.ClientMessagePong;
 import Messages.Client.ClientMessageText;
+import Messages.Server.ServerMessageJoin;
+import Messages.Server.ServerMessagePing;
+import Messages.Server.ServerMessageText;
+
 import javax.websocket.Session;
 import java.util.logging.Level;
 
@@ -28,7 +33,7 @@ public class ChatServerMessageSender implements ClientMessager {
     }
 */
     @Override
-    public void SendTextMessage(ClientMessageText responseMessage) {
+    public void SendTextMessage(ServerMessageText responseMessage) {
                 String json = gson.toJson(responseMessage);
         ChatLogger.Log(Level.FINEST, "Sending client: " + session.getId() + " "
                 + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress")
@@ -41,7 +46,12 @@ public class ChatServerMessageSender implements ClientMessager {
     @Override
     public void SendPong() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'SendPong'");
+        ServerMessagePing responseMessage = new ServerMessagePing();
+        String json = gson.toJson(responseMessage);
+        ChatLogger.Log(Level.FINEST, "Sending client: " + session.getId() + " "
+                + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress")
+                + responseMessage);
+        session.getAsyncRemote().sendText(json);
     }
 
     @Override

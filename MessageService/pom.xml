@@ -91,7 +91,7 @@
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>javax-websocket-server-impl</artifactId>
-            <version>9.4.15.v20190215</version>
+            <version>9.4.53.v20231009</version>
             <exclusions><!--We need to put this here, because for some godawful reason it keeps trying to find the client APIs as well...-->
                 <exclusion>
                     <groupId>javax.websocket</groupId>
@@ -102,7 +102,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlets</artifactId>
-            <version>9.4.52.v20230823</version>
+            <version>9.4.53.v20231009</version>
             <exclusions><!--We need to put this here, because for some godawful reason it keeps trying to find the client APIs as well...-->
                 <exclusion>
                     <groupId>javax.websocket</groupId>
@@ -124,7 +124,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlets</artifactId>
-            <version>9.4.52.v20230823</version>
+            <version>9.4.53.v20231009</version>
         </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>

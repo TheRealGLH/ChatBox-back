@@ -37,8 +37,8 @@ public class ChatServer implements ServerMessager {
 
     @Override
     public void SendPing(ClientMessager client) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'SendPing'");
+        // Maybe pass this to our actual server object :^)
+        client.SendPong();
     }
 
     @Override

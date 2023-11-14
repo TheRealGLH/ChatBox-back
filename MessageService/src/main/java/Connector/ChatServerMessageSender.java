@@ -3,9 +3,6 @@ package Connector;
 import Utilities.ChatLogger;
 import com.google.gson.Gson;
 import Interfaces.ClientMessager;
-import Messages.Client.ClientMessagePong;
-import Messages.Client.ClientMessageText;
-import Messages.Server.ServerMessageJoin;
 import Messages.Server.ServerMessagePing;
 import Messages.Server.ServerMessageText;
 

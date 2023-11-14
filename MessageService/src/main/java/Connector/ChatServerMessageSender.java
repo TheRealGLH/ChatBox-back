@@ -3,7 +3,7 @@ package Connector;
 import Utilities.ChatLogger;
 import com.google.gson.Gson;
 import Interfaces.ClientMessager;
-import Messages.Server.ServerMessagePing;
+import Messages.Server.ServerMessagePong;
 import Messages.Server.ServerMessageText;
 
 import javax.websocket.Session;
@@ -43,7 +43,7 @@ public class ChatServerMessageSender implements ClientMessager {
     @Override
     public void SendPong() {
         // TODO Auto-generated method stub
-        ServerMessagePing responseMessage = new ServerMessagePing();
+        ServerMessagePong responseMessage = new ServerMessagePong();
         String json = gson.toJson(responseMessage);
         ChatLogger.Log(Level.FINEST, "Sending client: " + session.getId() + " "
                 + session.getUserProperties().get("javax.websocket.endpoint.remoteAddress")

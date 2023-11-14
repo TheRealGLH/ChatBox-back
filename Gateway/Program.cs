@@ -35,8 +35,8 @@ namespace OcelotBasic
             .UseIISIntegration()
             .Configure(app =>
             {
-                app.UseOcelot().Wait();
                 app.UseWebSockets();
+                app.UseOcelot().Wait();
             })
             .Build()
             .Run();

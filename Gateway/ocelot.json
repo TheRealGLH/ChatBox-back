@@ -9,8 +9,19 @@
                     "Port": 80
                 }
             ],
-            "UpstreamPathTemplate": "/character"
+            "UpstreamPathTemplate": "/character/"
         },
+        {
+            "UpstreamPathTemplate": "/character/{characterID}",
+            "DownstreamPathTemplate": "/character/{characterID}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                { 
+                    "Host": "character-service", 
+                    "Port": 80 
+                }
+            ]
+          },
         {
             "DownstreamPathTemplate": "/avatar/",
             "DownstreamScheme": "http",
@@ -53,7 +64,7 @@
                     "Port": 80
                 }
             ],
-            "UpstreamPathTemplate": "/character"
+            "UpstreamPathTemplate": "/report"
         },
         {
             "UpstreamPathTemplate": "/chat",

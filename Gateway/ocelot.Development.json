@@ -1,26 +1,84 @@
 {
     "Routes": [
         {
-        "DownstreamPathTemplate": "/character/",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-            {
-                "Host": "localhost",
-                "Port": 5087
-            }
-        ],
-        "UpstreamPathTemplate": "/character"
+            "DownstreamPathTemplate": "/character/",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "character-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/character/"
+        },
+        {
+            "UpstreamPathTemplate": "/character/{characterID}",
+            "DownstreamPathTemplate": "/character/{characterID}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                { 
+                    "Host": "character-service", 
+                    "Port": 80 
+                }
+            ]
+          },
+        {
+            "DownstreamPathTemplate": "/avatar/",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "avatar-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/avatar"
+        },
+        {
+            "DownstreamPathTemplate": "/bookmark/",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "bookmark-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/bookmark"
+        },
+        {
+            "DownstreamPathTemplate": "/profile/",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "profile-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/profile"
+        },
+        {
+            "DownstreamPathTemplate": "/report/",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "report-service",
+                    "Port": 80
+                }
+            ],
+            "UpstreamPathTemplate": "/report"
         },
         {
             "UpstreamPathTemplate": "/chat",
             "DownstreamPathTemplate": "/chat",
             "DownstreamScheme": "ws",
             "DownstreamHostAndPorts": [
-              { "Host": "localhost", "Port": 8095 }
+                {
+                    "Host": "chatmessenger-service",
+                    "Port": 8095
+                }
             ]
-          }
+        }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:80"
+        "BaseUrl": "http://localhost:5000"
     }
 }

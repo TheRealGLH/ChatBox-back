@@ -28,8 +28,19 @@ services:
     build:
       context: ./CharacterService
       dockerfile: Dockerfile
-#    ports:
-#      - "8002:80"
+  character-database:
+    image: mongo:7.0.3
+    command: 
+    volumes: 
+      - ./CharacterService/db/data:/data/db:delegated
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    env_file:
+      - ./CharacterService/db/.env
   avatar-service:
     build:
       context: ./AvatarService

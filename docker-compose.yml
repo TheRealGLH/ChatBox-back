@@ -13,6 +13,17 @@ services:
       dockerfile: Dockerfile
 #    ports:
 #      - "8001:8095"
+  chatmessenger-database:
+    image: mysql:8.2.0-oracle
+    command: 
+    volumes: 
+      - ./MessageService/db/data:/var/lib/mysql:delegated
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 3
+    env_file:
+      - ./MessageService/db/.env
   character-service:
     build:
       context: ./CharacterService

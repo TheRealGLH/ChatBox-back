@@ -1,0 +1,32 @@
+name: Chat Service Docker Push
+
+on:
+  push:
+    tags:        
+      - '*'  
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Log in to Docker
+      run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+    
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      working-directory: ./MessageService
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-messageservice --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-messageservice:${{ steps.vars.outputs.tag }}
+
+    - uses: actions/checkout@v3
+    - name: Push latest tag
+      working-directory: ./MessageService
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-messageservice:latest
+
+    - uses: actions/checkout@v3
+    - name: Push archival tag
+      working-directory: ./MessageService
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-messageservice:${{ steps.vars.outputs.tag }}

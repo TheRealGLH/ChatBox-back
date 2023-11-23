@@ -25,6 +25,8 @@ services:
     build:
       context: ./CharacterService
       dockerfile: Dockerfile
+    environment:
+      - DATABASE_MOCK=false
   character-database:
     image: mongo:7.0.3
     volumes: 

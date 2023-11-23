@@ -8,11 +8,24 @@ public class CharacterController : ControllerBase
 {
 
     private readonly ILogger<CharacterController> _logger;
-    private static ICharacterStore characterStore = new CharacterStoreMock();
+    private static ICharacterStore characterStore;
 
     public CharacterController(ILogger<CharacterController> logger)
     {
-        _logger = logger;
+        string DatabaseEnvironmentMock;
+        bool toDelete = false;
+
+        DatabaseEnvironmentMock = Environment.GetEnvironmentVariable("DATABASE_MOCK");
+        // If necessary, create it.
+        if (DatabaseEnvironmentMock == null || DatabaseEnvironmentMock == "true")
+        {
+            characterStore = new CharacterStoreMock();
+            Console.WriteLine("Database mock type not set or 'true'. Not connecting to DB provider");
+        }
+        else
+        {
+            characterStore = new CharacterStoreDatabase();
+        }
     }
 
     [HttpGet]
@@ -21,13 +34,13 @@ public class CharacterController : ControllerBase
     [ProducesResponseType(typeof(string), 404)]
     public IActionResult Get(String characterID)
     {
-        try 
+        try
         {
             return Ok(characterStore.GetCharacter(characterID));
         }
-        catch(KeyNotFoundException e)
+        catch (KeyNotFoundException e)
         {
-            return NotFound("The character with ID: "+characterID+" does not exist.");
+            return NotFound("The character with ID: " + characterID + " does not exist.");
         }
     }
 
@@ -37,14 +50,14 @@ public class CharacterController : ControllerBase
     [ProducesResponseType(typeof(string), 404)]
     public IActionResult Delete(String characterID)
     {
-        try 
+        try
         {
             characterStore.DeleteCharacter(characterID);
             return Ok();
         }
-        catch(KeyNotFoundException e)
+        catch (KeyNotFoundException e)
         {
-            return NotFound("The character with ID: "+characterID+" does not exist.");
+            return NotFound("The character with ID: " + characterID + " does not exist.");
         }
     }
 
@@ -54,13 +67,13 @@ public class CharacterController : ControllerBase
     [ProducesResponseType(typeof(string), 404)]
     public IActionResult Update(String characterID, Character character)
     {
-        try 
+        try
         {
-            return Ok(characterStore.UpdateCharacter(character,characterID));
+            return Ok(characterStore.UpdateCharacter(character, characterID));
         }
-        catch(KeyNotFoundException e)
+        catch (KeyNotFoundException e)
         {
-            return NotFound("The character with ID: "+characterID+" does not exist.");
+            return NotFound("The character with ID: " + characterID + " does not exist.");
         }
     }
 

@@ -1,4 +1,4 @@
-namespace CharacterService.Controllers;
+namespace CharacterService.Models;
 
 public class Character
 {

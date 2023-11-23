@@ -1,20 +1,13 @@
 import java.sql.*;
 
+import Database.DatabaseConnectorMySql;
+import Database.IDatabaseConnector;
+
 class DBRun {
     public static void main(String args[]) {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:33060/chatbox_messages", "root", "root");
-            // here sonoo is database name, root is username and password
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from channel");
-            while (rs.next())
-                System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3));
-            con.close();
-        } catch (Exception e) {
-            System.out.println(e);
-            e.printStackTrace();
-        }
+        IDatabaseConnector databaseConnector = new DatabaseConnectorMySql();
+        databaseConnector.getAllChatChannels();
+        databaseConnector.getChatChannel("0.15595286540310166");
+
     }
 }

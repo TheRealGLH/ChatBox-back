@@ -1,3 +1,5 @@
+using CharacterService.Models;
+using CharacterService.Views;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CharacterService.Controllers;

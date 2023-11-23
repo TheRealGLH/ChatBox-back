@@ -2,11 +2,15 @@ version: "3.8"
 
 services:
   gateway-service:
-    image: martijnd95/chatbox-gateway:latest
+    build:
+      context: ./Gateway
+      dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8080:80"
   chatmessenger-service:
-    image: martijnd95/chatbox-messageservice:latest
+    build:
+      context: ./MessageService
+      dockerfile: Dockerfile
   chatmessenger-database:
     image: mysql:8.2.0-oracle
     volumes: 
@@ -18,9 +22,11 @@ services:
     env_file:
       - ./MessageService/db/.env
   character-service:
-    image: martijnd95/chatbox-characterservice:latest
+    build:
+      context: ./CharacterService
+      dockerfile: Dockerfile
   character-database:
-    image: mongo:7.0.3 
+    image: mongo:7.0.3
     volumes: 
       - ./CharacterService/db/data:/data/db:delegated
     healthcheck:
@@ -32,10 +38,17 @@ services:
     env_file:
       - ./CharacterService/db/.env
   avatar-service:
-    image: martijnd95/chatbox-avatarservice:latest
+    build:
+      context: ./AvatarService
+      dockerfile: Dockerfile
   bookmark-service:
-    image: martijnd95/chatbox-bookmarkservice:latest
+    build:
+      context: ./BookmarkService
   profile-service:
-    image: martijnd95/chatbox-profileservice:latest
+    build:
+      context: ./ProfileService
+      dockerfile: Dockerfile
   report-service:
-    image: martijnd95/chatbox-reportservice:latest
+    build:
+      context: ./ReportService
+      dockerfile: Dockerfile

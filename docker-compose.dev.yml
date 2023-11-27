@@ -39,6 +39,13 @@ services:
       start_period: 40s
     env_file:
       - ./CharacterService/db/.env
+  character-database-monitor:
+    restart: always
+    image: mongo-express:latest
+    env_file:
+      - ./CharacterService/db/.env
+    ports:
+      - 8082:8081
   avatar-service:
     build:
       context: ./AvatarService

@@ -20,13 +20,14 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
     }
     public string Add(Character character)
     {
+        GetCollection();
         _characterCollection.InsertOne(character);
         return character.Id.ToString();
     }
 
     public void Delete(string characterHash)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("The method Delete() is not implemented.");
     }
 
     public Character Get(string characterHash)
@@ -41,7 +42,7 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
 
     public Character Update(string characterHash, Character character)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("The method Update() is not implemented.");
     }
 
     void GetCollection()

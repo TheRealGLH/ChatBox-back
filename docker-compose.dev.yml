@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  gateway-service:
+    build:
+      context: ./Gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+  chatmessenger-service:
+    build:
+      context: ./MessageService
+      dockerfile: Dockerfile
+  chatmessenger-database:
+    image: mysql:8.2.0-oracle
+    volumes: 
+      - ./MessageService/db/data:/var/lib/mysql:delegated
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 3
+    env_file:
+      - ./MessageService/db/.env
+  character-service:
+    build:
+      context: ./CharacterService
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_MOCK=false
+  character-database:
+    image: mongo:7.0.3
+    volumes: 
+      - ./CharacterService/db/data:/data/db:delegated
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    env_file:
+      - ./CharacterService/db/.env
+  character-database-monitor:
+    restart: always
+    image: mongo-express:latest
+    env_file:
+      - ./CharacterService/db/.env
+    ports:
+      - 8082:8081
+  avatar-service:
+    build:
+      context: ./AvatarService
+      dockerfile: Dockerfile
+  bookmark-service:
+    build:
+      context: ./BookmarkService
+  profile-service:
+    build:
+      context: ./ProfileService
+      dockerfile: Dockerfile
+  report-service:
+    build:
+      context: ./ReportService
+      dockerfile: Dockerfile

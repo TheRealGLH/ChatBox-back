@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  gateway-service:
+    image: martijnd95/chatbox-gateway:latest
+    ports:
+      - "80:80"
+  chatmessenger-service:
+    image: martijnd95/chatbox-messageservice:latest
+  chatmessenger-database:
+    image: mysql:8.2.0-oracle
+    volumes: 
+      - ./MessageService/db/data:/var/lib/mysql:delegated
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 3
+    env_file:
+      - ./MessageService/db/.env
+  character-service:
+    image: martijnd95/chatbox-characterservice:latest
+  character-database:
+    image: mongo:7.0.3 
+    restart: always
+    volumes: 
+      - ./CharacterService/db/data:/data/db:delegated
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    env_file:
+      - ./CharacterService/db/.env
+  avatar-service:
+    image: martijnd95/chatbox-avatarservice:latest
+  bookmark-service:
+    image: martijnd95/chatbox-bookmarkservice:latest
+  profile-service:
+    image: martijnd95/chatbox-profileservice:latest
+  report-service:
+    image: martijnd95/chatbox-reportservice:latest

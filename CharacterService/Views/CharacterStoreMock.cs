@@ -1,18 +1,20 @@
-using CharacterService.Controllers;
+using CharacterService.Models;
+using CharacterService.Views;
+
 
 class CharacterStoreMock : ICharacterStore
 {
     Dictionary<String, Character> characterStore;
-    static Random random =  new Random();
+    static Random random = new Random();
     static string hashChars = "abcdefghijklmnopqrstuvwxyz1234567890";
     const int hashLength = 5;
-    
+
     public CharacterStoreMock()
     {
-        
+
         characterStore = new Dictionary<string, Character>();
-        characterStore.Add("a",new Character("Test Man",0));
-        
+        characterStore.Add("a", new Character("Test Man", 0));
+
     }
 
     public String CreateCharacter(Character character)
@@ -22,7 +24,7 @@ class CharacterStoreMock : ICharacterStore
         {
             characterHash = RandomString(hashLength);
         }
-        characterStore.Add(characterHash,character);
+        characterStore.Add(characterHash, character);
         return characterHash;
     }
 
@@ -35,17 +37,17 @@ class CharacterStoreMock : ICharacterStore
     public Character GetCharacter(string charID)
     {
         Character character;
-        if(characterStore.TryGetValue(charID,out character))
+        if (characterStore.TryGetValue(charID, out character))
         {
             return character;
         }
-        throw new KeyNotFoundException("The character with ID " + charID +" does not exist.");
+        throw new KeyNotFoundException("The character with ID " + charID + " does not exist.");
     }
 
     public Character UpdateCharacter(Character updatedChar, string charID)
     {
         Character oldCharacter = GetCharacter(charID);
-        if(oldCharacter != updatedChar)
+        if (oldCharacter != updatedChar)
         {
             characterStore[charID] = updatedChar;
         }
@@ -54,8 +56,8 @@ class CharacterStoreMock : ICharacterStore
 
     static string RandomString(int length)
     {
-    return new string(Enumerable.Repeat(hashChars, length)
-        .Select(s => s[random.Next(s.Length)]).ToArray());
+        return new string(Enumerable.Repeat(hashChars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
 }

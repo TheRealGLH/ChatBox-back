@@ -1,5 +1,9 @@
 using CharacterService.Controllers;
 
+namespace CharacterService.Views;
+
+using CharacterService.Models;
+
 public interface ICharacterStore
 {
     public String CreateCharacter(Character character);

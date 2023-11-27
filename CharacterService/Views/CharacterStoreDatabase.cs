@@ -2,28 +2,30 @@ namespace CharacterService.Views;
 
 using CharacterService.Connectors;
 using CharacterService.Models;
+using Microsoft.Extensions.Options;
+
 public class CharacterStoreDatabase : ICharacterStore
 {
-    ICharacterDatabaseConnector characterStore;
+    ICharacterDatabaseConnector characterConnector;
 
-    public CharacterStoreDatabase(){
-        
+    public CharacterStoreDatabase(IOptions<CharacterDatabaseSettings> characterDatabaseSettings){
+        characterConnector = new CharacterDatabaseConnectorMongo(characterDatabaseSettings);
     }
     public String CreateCharacter(Character character)
     {
-        String characterHash = characterStore.Add(character);
+        String characterHash = characterConnector.Add(character);
         return characterHash;
     }
 
     public void DeleteCharacter(string charID)
     {
         GetCharacter(charID);
-        characterStore.Delete(charID);
+        characterConnector.Delete(charID);
     }
 
     public Character GetCharacter(string charID)
     {
-        Character character = characterStore.Get(charID);
+        Character character = characterConnector.Get(charID);
         if (character != null) return character;
         throw new KeyNotFoundException("The character with ID " + charID +" does not exist.");
     }
@@ -33,7 +35,7 @@ public class CharacterStoreDatabase : ICharacterStore
         Character oldCharacter = GetCharacter(charID);
         if(oldCharacter != updatedChar)
         {
-            characterStore.Update(charID,updatedChar);
+            characterConnector.Update(charID,updatedChar);
         }
         return updatedChar;
     }

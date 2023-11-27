@@ -21,6 +21,7 @@ services:
     image: martijnd95/chatbox-characterservice:latest
   character-database:
     image: mongo:7.0.3 
+    restart: always
     volumes: 
       - ./CharacterService/db/data:/data/db:delegated
     healthcheck:

@@ -1,6 +1,7 @@
 using CharacterService.Models;
 using CharacterService.Views;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace CharacterService.Controllers;
 
@@ -12,11 +13,13 @@ public class CharacterController : ControllerBase
     private readonly ILogger<CharacterController> _logger;
     private static ICharacterStore characterStore;
 
-    public CharacterController(ILogger<CharacterController> logger)
+    public CharacterController(ILogger<CharacterController> logger, IOptions<CharacterDatabaseSettings> characterDatabaseSettings)
     {
         string DatabaseEnvironmentMock;
         bool toDelete = false;
 
+
+        /*
         DatabaseEnvironmentMock = Environment.GetEnvironmentVariable("DATABASE_MOCK");
         // If necessary, create it.
         if (DatabaseEnvironmentMock == null || DatabaseEnvironmentMock == "true")
@@ -25,9 +28,9 @@ public class CharacterController : ControllerBase
             Console.WriteLine("Database mock type not set or 'true'. Not connecting to DB provider");
         }
         else
-        {
-            characterStore = new CharacterStoreDatabase();
-        }
+        {*/
+            characterStore = new CharacterStoreDatabase(characterDatabaseSettings);
+        //}
     }
 
     [HttpGet]

@@ -2,12 +2,14 @@ namespace CharacterService.Views;
 
 using CharacterService.Connectors;
 using CharacterService.Models;
+using Microsoft.Extensions.Options;
+
 public class CharacterStoreDatabase : ICharacterStore
 {
     ICharacterDatabaseConnector characterConnector;
 
-    public CharacterStoreDatabase(){
-        characterConnector = new CharacterDatabaseConnectorMongo();
+    public CharacterStoreDatabase(IOptions<CharacterDatabaseSettings> characterDatabaseSettings){
+        characterConnector = new CharacterDatabaseConnectorMongo(characterDatabaseSettings);
     }
     public String CreateCharacter(Character character)
     {

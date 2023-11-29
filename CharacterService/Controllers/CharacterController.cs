@@ -1,5 +1,6 @@
 using CharacterService.Models;
 using CharacterService.Views;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -11,10 +12,16 @@ public class CharacterController : ControllerBase
 {
 
     private readonly ILogger<CharacterController> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IAuthorizationService _authorizationService;
     private static ICharacterStore characterStore;
 
-    public CharacterController(ILogger<CharacterController> logger, IOptions<CharacterDatabaseSettings> characterDatabaseSettings)
+    public CharacterController(ILogger<CharacterController> logger, IOptions<CharacterDatabaseSettings> characterDatabaseSettings,
+        IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService)
     {
+        _authorizationService = authorizationService;
+        _httpContextAccessor = httpContextAccessor;
+        _logger = logger;
         string DatabaseEnvironmentMock;
         bool toDelete = false;
 
@@ -29,7 +36,7 @@ public class CharacterController : ControllerBase
         }
         else
         {*/
-            characterStore = new CharacterStoreDatabase(characterDatabaseSettings);
+        characterStore = new CharacterStoreDatabase(characterDatabaseSettings);
         //}
     }
 
@@ -39,14 +46,26 @@ public class CharacterController : ControllerBase
     [ProducesResponseType(typeof(string), 404)]
     public IActionResult Get(String characterID)
     {
+        Character character;
         try
         {
-            return Ok(characterStore.GetCharacter(characterID));
+            character = characterStore.GetCharacter(characterID);
         }
         catch (KeyNotFoundException e)
         {
             return NotFound("The character with ID: " + characterID + " does not exist.");
         }
+        var result = _authorizationService.AuthorizeAsync(User, character, "GetPolicy");
+        if (result.IsCompletedSuccessfully) return Ok(character);
+        else if (User.Identity.IsAuthenticated)
+        {
+            return new ForbidResult();
+        }
+        else
+        {
+            return new ChallengeResult();
+        }
+
     }
 
     [HttpDelete]
@@ -85,8 +104,9 @@ public class CharacterController : ControllerBase
     [HttpPut]
     [ProducesResponseType(typeof(string), 200)]
     [ProducesResponseType(typeof(string), 404)]
-    public String Create(Character character)
+    public IActionResult Create(Character character)
     {
-        return characterStore.CreateCharacter(character);
+        if(User.Identity.IsAuthenticated) return Ok(characterStore.CreateCharacter(character));
+        return new ForbidResult();
     }
 }

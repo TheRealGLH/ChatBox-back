@@ -6,7 +6,6 @@ namespace CharacterService.Models;
 
 public class Character
 {
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public String owner { get; set; }
     [BsonId]
     public ObjectId Id { get; set; }
@@ -16,6 +15,13 @@ public class Character
     {
         this.CharacterName = CharacterName;
         this.Gender = gender;
+    }
+
+    public Character(CharacterSubmission characterSubmission, String owner)
+    {
+        this.CharacterName = characterSubmission.characterName;
+        this.Gender = characterSubmission.Gender;
+        this.owner = owner;
     }
 
     public void Anonymize()

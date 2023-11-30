@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CharacterService.Models;
 using CharacterService.Views;
 using Microsoft.AspNetCore.Authorization;
@@ -41,11 +42,23 @@ public class CharacterController : ControllerBase
         //}
     }
 
+    [HttpPost]
+    [ProducesResponseType(typeof(string), 200)]
+    [ProducesResponseType(typeof(string), 404)]
+    public IActionResult Create(CharacterSubmission characterSubmission)
+    {
+        if (User.Identity.IsAuthenticated) return Ok(characterStore.CreateCharacter(new Character(
+            characterSubmission,
+            User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+        )));
+        return new ForbidResult();
+    }
+
     [HttpGet]
     [Route("{characterID}")]
     [ProducesResponseType(typeof(Character), 200)]
     [ProducesResponseType(typeof(string), 404)]
-    public IActionResult Get(String characterID)
+    public IActionResult Read(String characterID)
     {
         Character character;
         try
@@ -64,9 +77,26 @@ public class CharacterController : ControllerBase
         }
         else
         {
-            return new ChallengeResult();
+            return new ChallengeResult("You're not authorized to view this character.");
         }
 
+    }
+
+    [HttpPut]
+    [Route("{characterID}")]
+    [ProducesResponseType(typeof(Character), 200)]
+    [ProducesResponseType(typeof(string), 404)]
+    public IActionResult Update(String characterID, Character character)
+    {
+        //TODO: Character Update field, perhaps?
+        try
+        {
+            return Ok(characterStore.UpdateCharacter(character, characterID));
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound("The character with ID: " + characterID + " does not exist.");
+        }
     }
 
     [HttpDelete]
@@ -86,28 +116,6 @@ public class CharacterController : ControllerBase
         }
     }
 
-    [HttpPatch]
-    [Route("{characterID}")]
-    [ProducesResponseType(typeof(Character), 200)]
-    [ProducesResponseType(typeof(string), 404)]
-    public IActionResult Update(String characterID, Character character)
-    {
-        try
-        {
-            return Ok(characterStore.UpdateCharacter(character, characterID));
-        }
-        catch (KeyNotFoundException e)
-        {
-            return NotFound("The character with ID: " + characterID + " does not exist.");
-        }
-    }
 
-    [HttpPut]
-    [ProducesResponseType(typeof(string), 200)]
-    [ProducesResponseType(typeof(string), 404)]
-    public IActionResult Create(Character character)
-    {
-        if(User.Identity.IsAuthenticated) return Ok(characterStore.CreateCharacter(character));
-        return new ForbidResult();
-    }
+
 }

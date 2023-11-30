@@ -18,3 +18,4 @@ public class DocumentAuthorizationHandler :
 }
 
 public class SameAuthorRequirement : IAuthorizationRequirement { }
+

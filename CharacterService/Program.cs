@@ -20,24 +20,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 		ValidAudience = "chatbox-b88f3",
 		ValidateIssuer = true,
 		ValidIssuer = "https://securetoken.google.com/chatbox-b88f3",
-		ValidateLifetime = true,	};
+		ValidateLifetime = true,
+	};
 });
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("EditPolicy", policy =>
-        policy.Requirements.Add(new SameAuthorRequirement()));
+	options.AddPolicy("EditPolicy", policy =>
+		policy.Requirements.Add(new SameAuthorRequirement()));
+	options.AddPolicy("GetPolicy", policy =>
+		policy.Requirements.Add(new SameAuthorRequirement()));
 });
 
 builder.Services.Configure<CharacterDatabaseSettings>(
-    builder.Configuration.GetSection("CharacterAPI"));
+	builder.Configuration.GetSection("CharacterAPI"));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

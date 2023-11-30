@@ -1,6 +1,6 @@
 using CharacterService.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer; // NOTE: line is newly added
-using Microsoft.IdentityModel.Tokens; // NOTE: line is newly added
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,16 +13,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
+	options.Authority = "https://securetoken.google.com/chatbox-b88f3";
 	options.TokenValidationParameters = new TokenValidationParameters
 	{
 		ValidateAudience = true,
-		ValidAudience = "chatbox-b88f3", // NOTE: USE THE REAL DOMAIN NAME
+		ValidAudience = "chatbox-b88f3",
 		ValidateIssuer = true,
-		ValidIssuer = "https://securetoken.google.com/chatbox-b88f3", // NOTE: USE THE REAL DOMAIN NAME
-		ValidateLifetime = true,
-		ValidateIssuerSigningKey = true,
-		//IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("396B5DD9-CC75-411C-9311-5B6E1F391B89")) // NOTE: THIS SHOULD BE A SECRET KEY NOT TO BE SHARED; REPLACE THIS GUID WITH A UNIQUE ONE
-	};
+		ValidIssuer = "https://securetoken.google.com/chatbox-b88f3",
+		ValidateLifetime = true,	};
 });
 builder.Services.AddAuthorization(options =>
 {

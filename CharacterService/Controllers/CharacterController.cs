@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace CharacterService.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class CharacterController : ControllerBase

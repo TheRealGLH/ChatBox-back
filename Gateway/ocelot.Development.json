@@ -1,34 +1,34 @@
 {
     "Routes": [
         {
-            "DownstreamPathTemplate": "/character/",
+            "DownstreamPathTemplate": "/character",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "character-service",
-                    "Port": 80
+                    "Host": "localhost",
+                    "Port": 5087
                 }
             ],
-            "UpstreamPathTemplate": "/character/"
+            "UpstreamPathTemplate": "/character"
         },
         {
             "UpstreamPathTemplate": "/character/{characterID}",
             "DownstreamPathTemplate": "/character/{characterID}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
-                { 
-                    "Host": "character-service", 
-                    "Port": 80 
+                {
+                    "Host": "localhost",
+                    "Port": 5087
                 }
             ]
           },
         {
-            "DownstreamPathTemplate": "/avatar/",
+            "DownstreamPathTemplate": "/WeatherForecast",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "avatar-service",
-                    "Port": 80
+                    "Host": "localhost",
+                    "Port": 5190
                 }
             ],
             "UpstreamPathTemplate": "/avatar"

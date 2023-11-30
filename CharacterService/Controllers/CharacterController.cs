@@ -86,16 +86,33 @@ public class CharacterController : ControllerBase
     [Route("{characterID}")]
     [ProducesResponseType(typeof(Character), 200)]
     [ProducesResponseType(typeof(string), 404)]
-    public IActionResult Update(String characterID, Character character)
+    public IActionResult Update(String characterID, CharacterSubmission characterToUpdate)
     {
-        //TODO: Character Update field, perhaps?
+        Character character;
         try
         {
-            return Ok(characterStore.UpdateCharacter(character, characterID));
+            character = characterStore.GetCharacter(characterID);
         }
         catch (KeyNotFoundException e)
         {
             return NotFound("The character with ID: " + characterID + " does not exist.");
+        }
+        var result = _authorizationService.AuthorizeAsync(User, character, "EditPolicy");
+        if (result.Result.Succeeded)
+        {
+            character.CharacterName = characterToUpdate.characterName;
+            character.Gender = characterToUpdate.Gender;
+
+            characterStore.UpdateCharacter(character, characterID);
+            return Ok(character);
+        }
+        else if (User.Identity.IsAuthenticated)
+        {
+            return new ForbidResult();
+        }
+        else
+        {
+            return new ChallengeResult("You're not authorized to alter this character.");
         }
     }
 
@@ -105,17 +122,29 @@ public class CharacterController : ControllerBase
     [ProducesResponseType(typeof(string), 404)]
     public IActionResult Delete(String characterID)
     {
+        Character character;
         try
         {
-            characterStore.DeleteCharacter(characterID);
-            return Ok();
+            character = characterStore.GetCharacter(characterID);
         }
         catch (KeyNotFoundException e)
         {
             return NotFound("The character with ID: " + characterID + " does not exist.");
         }
+        var result = _authorizationService.AuthorizeAsync(User, character, "EditPolicy");
+        if (result.IsCompletedSuccessfully)
+        {
+            characterStore.DeleteCharacter(characterID);
+            return Ok();
+        }
+        else if (User.Identity.IsAuthenticated)
+        {
+            return new ForbidResult();
+        }
+        else
+        {
+            return new ChallengeResult("You're not authorized to alter this character.");
+        }
     }
-
-
 
 }

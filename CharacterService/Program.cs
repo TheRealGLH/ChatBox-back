@@ -1,5 +1,6 @@
 using CharacterService.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,12 +28,12 @@ builder.Services.AddAuthorization(options =>
 {
 	options.AddPolicy("EditPolicy", policy =>
 		policy.Requirements.Add(new SameAuthorRequirement()));
-	options.AddPolicy("GetPolicy", policy =>
-		policy.Requirements.Add(new SameAuthorRequirement()));
 });
 
 builder.Services.Configure<CharacterDatabaseSettings>(
 	builder.Configuration.GetSection("CharacterAPI"));
+builder.Services.AddSingleton<IAuthorizationHandler, DocumentAuthorizationHandler>();
+
 
 var app = builder.Build();
 

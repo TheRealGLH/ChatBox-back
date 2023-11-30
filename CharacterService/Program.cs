@@ -28,10 +28,13 @@ builder.Services.AddAuthorization(options =>
 {
 	options.AddPolicy("EditPolicy", policy =>
 		policy.Requirements.Add(new SameAuthorRequirement()));
+	options.AddPolicy("RolePolicy", policy =>
+		policy.Requirements.Add(new HasCorrectRoleRequirement()));
 });
 
 builder.Services.Configure<CharacterDatabaseSettings>(
 	builder.Configuration.GetSection("CharacterAPI"));
+builder.Services.AddSingleton<IAuthorizationHandler, AccountAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, DocumentAuthorizationHandler>();
 
 

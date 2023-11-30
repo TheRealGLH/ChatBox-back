@@ -69,7 +69,7 @@ public class CharacterController : ControllerBase
         {
             return NotFound("The character with ID: " + characterID + " does not exist.");
         }
-        var result = _authorizationService.AuthorizeAsync(User, character, "GetPolicy");
+        var result = _authorizationService.AuthorizeAsync(User, "RolePolicy");
         if (result.IsCompletedSuccessfully) return Ok(character);
         else if (User.Identity.IsAuthenticated)
         {

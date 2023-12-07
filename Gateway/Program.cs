@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -27,6 +28,18 @@ namespace OcelotBasic
             })
             .ConfigureServices(s => {
                 s.AddOcelot();
+                s.AddCors(o =>
+                    {
+                        o.AddPolicy("CorsPolicy", p =>
+                        {
+                            //TODO: Change this to our hosted domain once we get there
+                            p.WithOrigins(new string[]{"http://127.0.0.1:4200","http://localhost:4200"})
+                            .AllowCredentials()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                        });
+                    });
+
             })
             .ConfigureLogging((hostingContext, logging) =>
             {
@@ -35,6 +48,7 @@ namespace OcelotBasic
             .UseIISIntegration()
             .Configure(app =>
             {
+                app.UseCors("CorsPolicy");
                 app.UseWebSockets();
                 app.UseOcelot().Wait();
             })

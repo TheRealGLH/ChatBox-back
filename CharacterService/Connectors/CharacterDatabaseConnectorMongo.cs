@@ -18,17 +18,17 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
         mongoDBName = characterDatabaseSettings.Value.DatabaseName;
         mongoCharCollectionName = characterDatabaseSettings.Value.CharacterCollectionName;
     }
-    public string Add(Character character)
+    public Character Add(Character character)
     {
         GetCollection();
         _characterCollection.InsertOne(character);
-        return character.Id.ToString();
+        return character;
     }
 
     public void Delete(string characterHash)
     {
         GetCollection();
-        _characterCollection.DeleteOne(character => character.Id == ObjectId.Parse(characterHash));
+        _characterCollection.DeleteOne(character => character.Id == characterHash);
     }
 
     public Character Get(string characterHash)
@@ -36,7 +36,8 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
         GetCollection();
         // start-find-linq
         Character query = _characterCollection.AsQueryable()
-            .Where(character => character.Id == ObjectId.Parse(characterHash)).FirstOrDefault();
+            .Where(character => character.Id == characterHash).FirstOrDefault();
+       //     .Where(character => character.Id == ObjectId.Parse(characterHash)).FirstOrDefault();
         // end-find-linq
         return query;
     }
@@ -44,8 +45,8 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
     public Character Update(string characterHash, Character character)
     {
         GetCollection();
-        character.Id = ObjectId.Parse(characterHash);
-        _characterCollection.ReplaceOne(character => character.Id == ObjectId.Parse(characterHash),character);
+        character.Id = characterHash;
+        _characterCollection.ReplaceOne(character => character.Id == characterHash,character);
         return character;
     }
 

@@ -17,7 +17,7 @@ class CharacterStoreMock : ICharacterStore
 
     }
 
-    public String CreateCharacter(Character character)
+    public Character CreateCharacter(Character character)
     {
         String characterHash = RandomString(hashLength);
         while (characterStore.ContainsKey(characterHash))
@@ -25,7 +25,7 @@ class CharacterStoreMock : ICharacterStore
             characterHash = RandomString(hashLength);
         }
         characterStore.Add(characterHash, character);
-        return characterHash;
+        return character;
     }
 
     public void DeleteCharacter(string charID)

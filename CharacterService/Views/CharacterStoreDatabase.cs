@@ -11,10 +11,10 @@ public class CharacterStoreDatabase : ICharacterStore
     public CharacterStoreDatabase(IOptions<CharacterDatabaseSettings> characterDatabaseSettings){
         characterConnector = new CharacterDatabaseConnectorMongo(characterDatabaseSettings);
     }
-    public String CreateCharacter(Character character)
+    public Character CreateCharacter(Character character)
     {
-        String characterHash = characterConnector.Add(character);
-        return characterHash;
+        Character charAdded = characterConnector.Add(character);
+        return charAdded;
     }
 
     public void DeleteCharacter(string charID)

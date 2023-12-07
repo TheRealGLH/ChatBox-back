@@ -4,7 +4,7 @@ using CharacterService.Models;
 
 public interface ICharacterDatabaseConnector
 {
-    public String Add(Character character);
+    public Character Add(Character character);
 
     public void Delete(String characterHash);
 

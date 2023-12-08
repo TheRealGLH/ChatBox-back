@@ -12,4 +12,6 @@ public interface ICharacterDatabaseConnector
 
     public Character Update(String characterHash, Character character);
 
+    public List<Character> GetAllUserCharacters(String uuid);
+
 }

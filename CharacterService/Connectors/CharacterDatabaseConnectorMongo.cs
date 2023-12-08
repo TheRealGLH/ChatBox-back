@@ -37,16 +37,23 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
         // start-find-linq
         Character query = _characterCollection.AsQueryable()
             .Where(character => character.Id == characterHash).FirstOrDefault();
-       //     .Where(character => character.Id == ObjectId.Parse(characterHash)).FirstOrDefault();
+        //     .Where(character => character.Id == ObjectId.Parse(characterHash)).FirstOrDefault();
         // end-find-linq
         return query;
+    }
+
+    public List<Character> GetAllUserCharacters(String uuid)
+    {
+        GetCollection();
+        return _characterCollection.AsQueryable()
+    .Where(r => r.owner == uuid).ToList();
     }
 
     public Character Update(string characterHash, Character character)
     {
         GetCollection();
         character.Id = characterHash;
-        _characterCollection.ReplaceOne(character => character.Id == characterHash,character);
+        _characterCollection.ReplaceOne(character => character.Id == characterHash, character);
         return character;
     }
 

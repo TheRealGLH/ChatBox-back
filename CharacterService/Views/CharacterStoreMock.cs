@@ -60,4 +60,8 @@ class CharacterStoreMock : ICharacterStore
             .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
+    public List<Character> GetAllUserCharacters(string uuid)
+    {
+        throw new NotImplementedException("Method GetAllUserCharacters() not yet implemented");
+    }
 }

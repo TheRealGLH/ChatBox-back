@@ -1,5 +1,6 @@
 namespace CharacterService.Views;
 
+using System.Collections.Generic;
 using CharacterService.Connectors;
 using CharacterService.Models;
 using Microsoft.Extensions.Options;
@@ -21,6 +22,11 @@ public class CharacterStoreDatabase : ICharacterStore
     {
         GetCharacter(charID);
         characterConnector.Delete(charID);
+    }
+
+    public List<Character> GetAllUserCharacters(string uuid)
+    {
+        return characterConnector.GetAllUserCharacters(uuid);
     }
 
     public Character GetCharacter(string charID)

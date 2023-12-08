@@ -82,6 +82,18 @@ public class CharacterController : ControllerBase
 
     }
 
+    //This goes after, so that we override the previous function.
+    [HttpGet]
+    [Route("mine")]
+    [ProducesResponseType(typeof(Character), 200)]
+    [ProducesResponseType(typeof(string), 404)]
+    public IActionResult ReadAllMine()
+    {
+        if (User.Identity.IsAuthenticated) return Ok(characterStore.GetAllUserCharacters(
+            User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+        return new ForbidResult();
+    }
+
     [HttpPut]
     [Route("{characterID}")]
     [ProducesResponseType(typeof(Character), 200)]

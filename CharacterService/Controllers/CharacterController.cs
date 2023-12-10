@@ -112,9 +112,7 @@ public class CharacterController : ControllerBase
         var result = _authorizationService.AuthorizeAsync(User, character, "EditPolicy");
         if (result.Result.Succeeded)
         {
-            character.CharacterName = characterToUpdate.characterName;
-            character.Gender = characterToUpdate.Gender;
-
+            character.UpdateCharacter(characterToUpdate);
             characterStore.UpdateCharacter(character, characterID);
             return Ok(character);
         }

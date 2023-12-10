@@ -13,7 +13,7 @@ class CharacterStoreMock : ICharacterStore
     {
 
         characterStore = new Dictionary<string, Character>();
-        characterStore.Add("a", new Character("Test Man", 0));
+        characterStore.Add("a", new Character("Test Man", "he/him","human","A man with mysterious powers."));
 
     }
 

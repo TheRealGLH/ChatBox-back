@@ -123,9 +123,14 @@ public class CharacterController : ControllerBase
         var result = _authorizationService.AuthorizeAsync(User, character, "EditPolicy");
         if (result.Result.Succeeded)
         {
-            character.UpdateCharacter(characterToUpdate);
-            characterStore.UpdateCharacter(character, characterID);
-            return Ok(character);
+            CharacterSubmissionValidationState validationState = characterToUpdate.validateSubmission();
+            if (validationState == CharacterSubmissionValidationState.Ok)
+            {
+                character.UpdateCharacter(characterToUpdate);
+                characterStore.UpdateCharacter(character, characterID);
+                return Ok(character);
+            }
+            else return BadRequest("The request was invalid because: " + validationState.ToString());
         }
         else if (User.Identity.IsAuthenticated)
         {

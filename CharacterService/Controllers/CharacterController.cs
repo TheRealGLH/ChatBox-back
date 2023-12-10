@@ -2,6 +2,7 @@ using System.Security.Claims;
 using CharacterService.Models;
 using CharacterService.Views;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -45,12 +46,22 @@ public class CharacterController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(string), 200)]
     [ProducesResponseType(typeof(string), 404)]
+    [ProducesResponseType(typeof(string), 400)]
     public IActionResult Create(CharacterSubmission characterSubmission)
     {
-        if (User.Identity.IsAuthenticated) return Ok(characterStore.CreateCharacter(new Character(
-            characterSubmission,
-            User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-        )));
+        if (User.Identity.IsAuthenticated)
+        {
+            CharacterSubmissionValidationState validationState = characterSubmission.validateSubmission();
+            if (validationState == CharacterSubmissionValidationState.Ok)
+            {
+                return Ok(characterStore.CreateCharacter(new Character(characterSubmission, User.FindFirst(ClaimTypes.NameIdentifier)?.Value)));
+            }
+            else
+            {
+                return BadRequest("The request was invalid because: " + validationState.ToString());
+            }
+        }
+
         return new ForbidResult();
     }
 

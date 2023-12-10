@@ -75,6 +75,7 @@ public class CharacterController : ControllerBase
         try
         {
             character = characterStore.GetCharacter(characterID);
+            character.Anonymize(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
         catch (KeyNotFoundException e)
         {

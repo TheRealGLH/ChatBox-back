@@ -3,11 +3,13 @@ using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
+using Newtonsoft.Json;
 
 namespace CharacterService.Models;
 
 public class Character
 {
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public String owner { get; set; }
     [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -44,8 +46,9 @@ public class Character
         this.Bio = characterSubmission.Bio; 
     }
 
-    public void Anonymize()
+    public void Anonymize(String requesterId)
     {
+        if(string.Equals(requesterId, owner)) return;
         this.owner = null;
     }
 }

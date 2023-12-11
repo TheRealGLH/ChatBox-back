@@ -1,3 +1,4 @@
+using CharacterService.Messaging;
 using CharacterService.Models;
 using CharacterService.Views;
 
@@ -8,6 +9,7 @@ class CharacterStoreMock : ICharacterStore
     static Random random = new Random();
     static string hashChars = "abcdefghijklmnopqrstuvwxyz1234567890";
     const int hashLength = 5;
+    IRabitMQProducer rabitMQProducer;
 
     public CharacterStoreMock()
     {
@@ -63,5 +65,10 @@ class CharacterStoreMock : ICharacterStore
     public List<Character> GetAllUserCharacters(string uuid)
     {
         throw new NotImplementedException("Method GetAllUserCharacters() not yet implemented");
+    }
+
+    public void registerMessager(IRabitMQProducer producer)
+    {
+        this.rabitMQProducer = producer;
     }
 }

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using CharacterService.Messaging;
 using CharacterService.Models;
 using CharacterService.Views;
 using Microsoft.AspNetCore.Authorization;
@@ -17,14 +18,17 @@ public class CharacterController : ControllerBase
     private readonly ILogger<CharacterController> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IAuthorizationService _authorizationService;
+    private readonly IRabitMQProducer _rabitMQProducer;
     private static ICharacterStore characterStore;
 
     public CharacterController(ILogger<CharacterController> logger, IOptions<CharacterDatabaseSettings> characterDatabaseSettings,
-        IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService)
+        IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService,
+        IRabitMQProducer rabitMQProducer)
     {
         _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
+        _rabitMQProducer = rabitMQProducer;
         string DatabaseEnvironmentMock;
         bool toDelete = false;
 
@@ -40,6 +44,7 @@ public class CharacterController : ControllerBase
         else
         {*/
         characterStore = new CharacterStoreDatabase(characterDatabaseSettings);
+        characterStore.registerMessager(_rabitMQProducer);
         //}
     }
 

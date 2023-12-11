@@ -5,6 +5,7 @@ using CharacterService.Connectors;
 using CharacterService.Messaging;
 using CharacterService.Models;
 using Microsoft.Extensions.Options;
+using ChatBoxSharedObjects.Messages;
 
 public class CharacterStoreDatabase : ICharacterStore
 {
@@ -17,7 +18,9 @@ public class CharacterStoreDatabase : ICharacterStore
     public Character CreateCharacter(Character character)
     {
         Character charAdded = characterConnector.Add(character);
-        rabitMQProducer.SendCreationMessage("fewf");
+        rabitMQProducer.SendCreationMessage(
+            new CharacterMessage(charAdded.Id, charAdded.owner, CharacterMessageType.CREATE
+            ));
         return charAdded;
     }
 

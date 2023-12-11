@@ -12,7 +12,8 @@ public class CharacterStoreDatabase : ICharacterStore
     ICharacterDatabaseConnector characterConnector;
     IRabitMQProducer rabitMQProducer;
 
-    public CharacterStoreDatabase(IOptions<CharacterDatabaseSettings> characterDatabaseSettings){
+    public CharacterStoreDatabase(IOptions<CharacterDatabaseSettings> characterDatabaseSettings)
+    {
         characterConnector = new CharacterDatabaseConnectorMongo(characterDatabaseSettings);
     }
     public Character CreateCharacter(Character character)
@@ -24,10 +25,13 @@ public class CharacterStoreDatabase : ICharacterStore
         return charAdded;
     }
 
-    public void DeleteCharacter(string charID)
+    public void DeleteCharacter(string characterId)
     {
-        GetCharacter(charID);
-        characterConnector.Delete(charID);
+        GetCharacter(characterId);
+        characterConnector.Delete(characterId);
+        rabitMQProducer.SendCreationMessage(
+    new CharacterMessage(characterId, "none", CharacterMessageType.CREATE
+    ));
     }
 
     public List<Character> GetAllUserCharacters(string uuid)
@@ -35,11 +39,11 @@ public class CharacterStoreDatabase : ICharacterStore
         return characterConnector.GetAllUserCharacters(uuid);
     }
 
-    public Character GetCharacter(string charID)
+    public Character GetCharacter(string characterId)
     {
-        Character character = characterConnector.Get(charID);
+        Character character = characterConnector.Get(characterId);
         if (character != null) return character;
-        throw new KeyNotFoundException("The character with ID " + charID +" does not exist.");
+        throw new KeyNotFoundException("The character with ID " + characterId + " does not exist.");
     }
 
     public void registerMessager(IRabitMQProducer producer)
@@ -50,9 +54,9 @@ public class CharacterStoreDatabase : ICharacterStore
     public Character UpdateCharacter(Character updatedChar, string charID)
     {
         Character oldCharacter = GetCharacter(charID);
-        if(oldCharacter != updatedChar)
+        if (oldCharacter != updatedChar)
         {
-            characterConnector.Update(charID,updatedChar);
+            characterConnector.Update(charID, updatedChar);
         }
         return updatedChar;
     }

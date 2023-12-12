@@ -6,13 +6,14 @@ using CharacterService.Messaging;
 using CharacterService.Models;
 using Microsoft.Extensions.Options;
 using ChatBoxSharedObjects.Messages;
+using ChatBoxSharedObjects.Security;
 
 public class CharacterStoreDatabase : ICharacterStore
 {
     ICharacterDatabaseConnector characterConnector;
     IRabitMQProducer rabitMQProducer;
 
-    public CharacterStoreDatabase(IOptions<CharacterDatabaseSettings> characterDatabaseSettings)
+    public CharacterStoreDatabase(IOptions<MongoDatabaseSettings> characterDatabaseSettings)
     {
         characterConnector = new CharacterDatabaseConnectorMongo(characterDatabaseSettings);
     }

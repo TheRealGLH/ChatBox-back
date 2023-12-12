@@ -1,5 +1,3 @@
-using CharacterService.Controllers;
-
 namespace CharacterService.Views;
 
 using CharacterService.Messaging;

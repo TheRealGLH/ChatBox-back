@@ -1,13 +1,15 @@
 using System.Security.Claims;
-using CharacterService.Models;
+using ChatBoxSharedObjects.Models;
 using Microsoft.AspNetCore.Authorization;
 
+namespace ChatBoxSharedObjects.Security;
+
 public class DocumentAuthorizationHandler :
-    AuthorizationHandler<SameAuthorRequirement, Character>
+    AuthorizationHandler<SameAuthorRequirement, StoredResource>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                                    SameAuthorRequirement requirement,
-                                                   Character resource)
+                                                   StoredResource resource)
     {
 
         if (context.User.FindFirstValue("user_id") == resource.owner)

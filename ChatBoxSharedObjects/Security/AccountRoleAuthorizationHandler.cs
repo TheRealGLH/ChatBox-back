@@ -1,7 +1,7 @@
-using System.Security.Claims;
-using CharacterService.Models;
+
 using Microsoft.AspNetCore.Authorization;
 
+namespace ChatBoxSharedObjects.Security;
 public class AccountAuthorizationHandler :
     AuthorizationHandler<HasCorrectRoleRequirement>
 {

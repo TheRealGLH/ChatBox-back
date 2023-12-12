@@ -1,5 +1,5 @@
 using CharacterService.Messaging;
-using CharacterService.Models;
+using ChatBoxSharedObjects.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -33,7 +33,7 @@ builder.Services.AddAuthorization(options =>
 		policy.Requirements.Add(new HasCorrectRoleRequirement()));
 });
 
-builder.Services.Configure<CharacterDatabaseSettings>(
+builder.Services.Configure<MongoDatabaseSettings>(
 	builder.Configuration.GetSection("CharacterAPI"));
 builder.Services.AddSingleton<IAuthorizationHandler, AccountAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, DocumentAuthorizationHandler>();

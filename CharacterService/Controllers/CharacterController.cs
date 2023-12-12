@@ -2,6 +2,7 @@ using System.Security.Claims;
 using CharacterService.Messaging;
 using CharacterService.Models;
 using CharacterService.Views;
+using ChatBoxSharedObjects.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ public class CharacterController : ControllerBase
     private readonly IRabitMQProducer _rabitMQProducer;
     private static ICharacterStore characterStore;
 
-    public CharacterController(ILogger<CharacterController> logger, IOptions<CharacterDatabaseSettings> characterDatabaseSettings,
+    public CharacterController(ILogger<CharacterController> logger, IOptions<MongoDatabaseSettings> characterDatabaseSettings,
         IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService,
         IRabitMQProducer rabitMQProducer)
     {

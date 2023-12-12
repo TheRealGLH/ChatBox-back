@@ -132,7 +132,7 @@ public class CharacterController : ControllerBase
             CharacterSubmissionValidationState validationState = characterToUpdate.validateSubmission();
             if (validationState == CharacterSubmissionValidationState.Ok)
             {
-                character.UpdateCharacter(characterToUpdate);
+                character.Update(characterToUpdate);
                 characterStore.UpdateCharacter(character, characterID);
                 return Ok(character);
             }

@@ -17,12 +17,12 @@ namespace CharacterService.Messaging {
             using
             var channel = connection.CreateModel();
             //declare the queue after mentioning name and a few property related to that
-            channel.QueueDeclare("product", exclusive: false);
+            //channel.QueueDeclare("profile", exclusive: false);
             //Serialize the message
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
             //put the data on to the product queue
-            channel.BasicPublish(exchange: "", routingKey: "product", body: body);
+            channel.BasicPublish(exchange: "characters", ExchangeType.Fanout, body: body);
         }
     }
 }

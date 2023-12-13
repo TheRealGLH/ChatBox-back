@@ -29,7 +29,7 @@ public class RabbitMqProducer : IRabbitMqProducer
         var json = JsonConvert.SerializeObject(message);
         var body = Encoding.UTF8.GetBytes(json);
         //put the data on to the product queue
-        _model.BasicPublish(exchange: "characters", ExchangeType.Fanout, body: body);
+        _model.BasicPublish(exchange: _configuration.ExchangeName, ExchangeType.Fanout, body: body);
     }
 
     void Dispose()

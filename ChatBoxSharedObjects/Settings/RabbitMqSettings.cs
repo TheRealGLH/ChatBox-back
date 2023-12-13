@@ -7,4 +7,5 @@ public class RabbitMqSettings
     public string Password { get; set; }
     public string ExchangeName { get; set; }
     public string QueueName { get; set; }
+    public string VirtualHost { get; set; }
 }

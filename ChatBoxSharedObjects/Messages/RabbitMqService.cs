@@ -17,7 +17,8 @@ public class RabbitMqService : IRabbitMqService
         {
             UserName = _configuration.Username,
             Password = _configuration.Password,
-            HostName = _configuration.HostName
+            HostName = _configuration.HostName,
+            VirtualHost = _configuration.VirtualHost
         };
         connection.DispatchConsumersAsync = true;
         var channel = connection.CreateConnection();

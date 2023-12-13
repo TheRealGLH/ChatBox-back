@@ -7,6 +7,7 @@ using CharacterService.Models;
 using Microsoft.Extensions.Options;
 using ChatBoxSharedObjects.Messages;
 using ChatBoxSharedObjects.Security;
+using ChatBoxSharedObjects.Settings;
 
 public class CharacterStoreDatabase : ICharacterStore
 {

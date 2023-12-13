@@ -32,7 +32,7 @@ public abstract class RabbitMqConsumerService : IRabbitMqConsumerService, IDispo
             _model.BasicAck(EventArgs.DeliveryTag, false);
             OnMessageReceived(EventArgs);
         };
-        _model.BasicConsume(_configuration.QueueName, false, consumer);
+        _model.BasicConsume(_model.CurrentQueue, false, consumer);
         await Task.CompletedTask;
     }
 

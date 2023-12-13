@@ -1,5 +1,7 @@
 using CharacterService.Messaging;
+using ChatBoxSharedObjects.Messages;
 using ChatBoxSharedObjects.Security;
+using ChatBoxSharedObjects.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 builder.Services.AddScoped < IRabbitMqProducer, RabbitMqProducer > ();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -35,6 +38,8 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.Configure<MongoDatabaseSettings>(
 	builder.Configuration.GetSection("CharacterAPI"));
+builder.Services.Configure<RabbitMqSettings>(
+	builder.Configuration.GetSection("RabbitMqConfiguration"));
 builder.Services.AddSingleton<IAuthorizationHandler, AccountAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationHandler, DocumentAuthorizationHandler>();
 

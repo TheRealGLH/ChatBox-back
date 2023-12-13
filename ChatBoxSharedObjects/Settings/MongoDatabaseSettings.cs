@@ -1,4 +1,4 @@
-namespace ChatBoxSharedObjects.Security;
+namespace ChatBoxSharedObjects.Settings;
 
 public class MongoDatabaseSettings
 {

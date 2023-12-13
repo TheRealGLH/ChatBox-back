@@ -3,6 +3,7 @@ using CharacterService.Messaging;
 using CharacterService.Models;
 using CharacterService.Views;
 using ChatBoxSharedObjects.Security;
+using ChatBoxSharedObjects.Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

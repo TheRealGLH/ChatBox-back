@@ -1,11 +1,13 @@
 using ChatBoxSharedObjects.Messages;
 using ChatBoxSharedObjects.Settings;
 using ProfileService.Messages;
+using ProfileService.Views;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add builder.Services to the container.
 builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
+builder.Services.AddSingleton<IProfileStore, ProfileStoreDatabase>();
 builder.Services.AddSingleton<IRabbitMqConsumerService, ProfileConsumerService>();
 builder.Services.AddHostedService<ConsumerHostedService>();
 builder.Services.AddControllers();

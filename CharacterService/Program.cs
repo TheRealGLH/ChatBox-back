@@ -1,4 +1,5 @@
 using CharacterService.Messaging;
+using CharacterService.Views;
 using ChatBoxSharedObjects.Messages;
 using ChatBoxSharedObjects.Security;
 using ChatBoxSharedObjects.Settings;
@@ -9,8 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<ICharacterStore, CharacterStoreDatabase>();
 builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
-builder.Services.AddScoped < IRabbitMqProducer, RabbitMqProducer > ();
+builder.Services.AddSingleton <IRabbitMqProducer, RabbitMqProducer> ();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

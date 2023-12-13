@@ -5,7 +5,6 @@ using CharacterService.Models;
 
 public interface ICharacterStore
 {
-    public void registerMessager(IRabbitMqProducer producer);
     public Character CreateCharacter(Character character);
     public Character GetCharacter(String charID);
     public List<Character> GetAllUserCharacters(String uuid);

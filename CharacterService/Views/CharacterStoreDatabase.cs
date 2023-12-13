@@ -12,16 +12,17 @@ using ChatBoxSharedObjects.Settings;
 public class CharacterStoreDatabase : ICharacterStore
 {
     ICharacterDatabaseConnector characterConnector;
-    IRabbitMqProducer rabitMQProducer;
+    IRabbitMqProducer rabbitMQProducer;
 
-    public CharacterStoreDatabase(IOptions<MongoDatabaseSettings> characterDatabaseSettings)
+    public CharacterStoreDatabase(IOptions<MongoDatabaseSettings> characterDatabaseSettings, IRabbitMqProducer rabbitMqProducer)
     {
         characterConnector = new CharacterDatabaseConnectorMongo(characterDatabaseSettings);
+        this.rabbitMQProducer = rabbitMqProducer;
     }
     public Character CreateCharacter(Character character)
     {
         Character charAdded = characterConnector.Add(character);
-        rabitMQProducer.SendCreationMessage(
+        rabbitMQProducer.SendCreationMessage(
             new CharacterMessage(charAdded.Id, charAdded.owner, CharacterMessageType.CREATE
             ));
         return charAdded;
@@ -31,7 +32,7 @@ public class CharacterStoreDatabase : ICharacterStore
     {
         GetCharacter(characterId);
         characterConnector.Delete(characterId);
-        rabitMQProducer.SendCreationMessage(
+        rabbitMQProducer.SendCreationMessage(
     new CharacterMessage(characterId, "none", CharacterMessageType.DELETE
     ));
     }
@@ -46,11 +47,6 @@ public class CharacterStoreDatabase : ICharacterStore
         Character character = characterConnector.Get(characterId);
         if (character != null) return character;
         throw new KeyNotFoundException("The character with ID " + characterId + " does not exist.");
-    }
-
-    public void registerMessager(IRabbitMqProducer producer)
-    {
-        this.rabitMQProducer = producer;
     }
 
     public Character UpdateCharacter(Character updatedChar, string charID)

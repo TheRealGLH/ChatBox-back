@@ -20,17 +20,14 @@ public class CharacterController : ControllerBase
     private readonly ILogger<CharacterController> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IAuthorizationService _authorizationService;
-    private readonly IRabbitMqProducer _rabitMQProducer;
-    private static ICharacterStore characterStore;
+    private readonly ICharacterStore characterStore;
 
-    public CharacterController(ILogger<CharacterController> logger, IOptions<MongoDatabaseSettings> characterDatabaseSettings,
-        IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService,
-        IRabbitMqProducer rabitMQProducer)
+    public CharacterController(ILogger<CharacterController> logger,
+        IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService, ICharacterStore characterStore)
     {
         _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
-        _rabitMQProducer = rabitMQProducer;
         string DatabaseEnvironmentMock;
         bool toDelete = false;
 
@@ -45,8 +42,7 @@ public class CharacterController : ControllerBase
         }
         else
         {*/
-        characterStore = new CharacterStoreDatabase(characterDatabaseSettings);
-        characterStore.registerMessager(_rabitMQProducer);
+        this.characterStore = characterStore;
         //}
     }
 

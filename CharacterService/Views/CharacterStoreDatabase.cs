@@ -11,7 +11,7 @@ using ChatBoxSharedObjects.Security;
 public class CharacterStoreDatabase : ICharacterStore
 {
     ICharacterDatabaseConnector characterConnector;
-    IRabitMQProducer rabitMQProducer;
+    IRabbitMqProducer rabitMQProducer;
 
     public CharacterStoreDatabase(IOptions<MongoDatabaseSettings> characterDatabaseSettings)
     {
@@ -47,7 +47,7 @@ public class CharacterStoreDatabase : ICharacterStore
         throw new KeyNotFoundException("The character with ID " + characterId + " does not exist.");
     }
 
-    public void registerMessager(IRabitMQProducer producer)
+    public void registerMessager(IRabbitMqProducer producer)
     {
         this.rabitMQProducer = producer;
     }

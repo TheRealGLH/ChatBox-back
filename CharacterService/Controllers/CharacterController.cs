@@ -19,12 +19,12 @@ public class CharacterController : ControllerBase
     private readonly ILogger<CharacterController> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IAuthorizationService _authorizationService;
-    private readonly IRabitMQProducer _rabitMQProducer;
+    private readonly IRabbitMqProducer _rabitMQProducer;
     private static ICharacterStore characterStore;
 
     public CharacterController(ILogger<CharacterController> logger, IOptions<MongoDatabaseSettings> characterDatabaseSettings,
         IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService,
-        IRabitMQProducer rabitMQProducer)
+        IRabbitMqProducer rabitMQProducer)
     {
         _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;

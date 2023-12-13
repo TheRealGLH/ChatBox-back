@@ -1,7 +1,11 @@
+using ChatBoxSharedObjects.Messages;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Add builder.Services to the container.
+builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
+builder.Services.AddSingleton<IRabbitMqConsumerService, RabbitMqConsumerService>();
+builder.Services.AddHostedService<ConsumerHostedService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 namespace CharacterService.Messaging {
-    public class RabitMQProducer: IRabitMQProducer {
+    public class RabbitMqProducer: IRabbitMqProducer {
         public void SendCreationMessage < T > (T message) {
             //Here we specify the Rabbit MQ Server. we use rabbitmq docker image and use it
             var factory = new ConnectionFactory {

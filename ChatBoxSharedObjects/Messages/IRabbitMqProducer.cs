@@ -1,5 +1,5 @@
 namespace CharacterService.Messaging {
-    public interface IRabitMQProducer {
+    public interface IRabbitMqProducer {
         public void SendCreationMessage < T > (T message);
     }
 }

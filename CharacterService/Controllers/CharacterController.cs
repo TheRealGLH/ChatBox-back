@@ -1,6 +1,9 @@
 using System.Security.Claims;
+using CharacterService.Messaging;
 using CharacterService.Models;
 using CharacterService.Views;
+using ChatBoxSharedObjects.Security;
+using ChatBoxSharedObjects.Settings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +20,10 @@ public class CharacterController : ControllerBase
     private readonly ILogger<CharacterController> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IAuthorizationService _authorizationService;
-    private static ICharacterStore characterStore;
+    private readonly ICharacterStore characterStore;
 
-    public CharacterController(ILogger<CharacterController> logger, IOptions<CharacterDatabaseSettings> characterDatabaseSettings,
-        IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService)
+    public CharacterController(ILogger<CharacterController> logger,
+        IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService, ICharacterStore characterStore)
     {
         _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
@@ -39,7 +42,7 @@ public class CharacterController : ControllerBase
         }
         else
         {*/
-        characterStore = new CharacterStoreDatabase(characterDatabaseSettings);
+        this.characterStore = characterStore;
         //}
     }
 
@@ -127,7 +130,7 @@ public class CharacterController : ControllerBase
             CharacterSubmissionValidationState validationState = characterToUpdate.validateSubmission();
             if (validationState == CharacterSubmissionValidationState.Ok)
             {
-                character.UpdateCharacter(characterToUpdate);
+                character.Update(characterToUpdate);
                 characterStore.UpdateCharacter(character, characterID);
                 return Ok(character);
             }

@@ -1,6 +1,6 @@
-namespace CharacterService.Models;
+namespace ChatBoxSharedObjects.Settings;
 
-public class CharacterDatabaseSettings
+public class MongoDatabaseSettings
 {
     public string ConnectionString { get; set; } = null!;
 

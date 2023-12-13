@@ -12,7 +12,7 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
     private string MongoConnectionString;
     private string mongoDBName;
     private string mongoCharCollectionName;
-    public CharacterDatabaseConnectorMongo(IOptions<CharacterDatabaseSettings> characterDatabaseSettings)
+    public CharacterDatabaseConnectorMongo(IOptions<ChatBoxSharedObjects.Settings.MongoDatabaseSettings> characterDatabaseSettings)
     {
         MongoConnectionString = characterDatabaseSettings.Value.ConnectionString;
         mongoDBName = characterDatabaseSettings.Value.DatabaseName;

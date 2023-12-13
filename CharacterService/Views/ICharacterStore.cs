@@ -1,7 +1,6 @@
-using CharacterService.Controllers;
-
 namespace CharacterService.Views;
 
+using CharacterService.Messaging;
 using CharacterService.Models;
 
 public interface ICharacterStore

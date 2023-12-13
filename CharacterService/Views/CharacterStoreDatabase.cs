@@ -31,7 +31,7 @@ public class CharacterStoreDatabase : ICharacterStore
         GetCharacter(characterId);
         characterConnector.Delete(characterId);
         rabitMQProducer.SendCreationMessage(
-    new CharacterMessage(characterId, "none", CharacterMessageType.CREATE
+    new CharacterMessage(characterId, "none", CharacterMessageType.DELETE
     ));
     }
 

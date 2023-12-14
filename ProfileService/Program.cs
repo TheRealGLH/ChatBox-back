@@ -1,6 +1,8 @@
 using ChatBoxSharedObjects.Messages;
+using ChatBoxSharedObjects.Security;
 using ChatBoxSharedObjects.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using ProfileService.Messages;
 using ProfileService.Views;
@@ -30,10 +32,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 	};
 });
 
+builder.Services.AddAuthorization(options =>
+{
+	options.AddPolicy("EditPolicy", policy =>
+		policy.Requirements.Add(new SameAuthorRequirement()));
+	options.AddPolicy("RolePolicy", policy =>
+		policy.Requirements.Add(new HasCorrectRoleRequirement()));
+});
+
 builder.Services.Configure<MongoDatabaseSettings>(
 	builder.Configuration.GetSection("MongoDB"));
 builder.Services.Configure<RabbitMqSettings>(
 	builder.Configuration.GetSection("RabbitMqConfiguration"));
+builder.Services.AddSingleton<IAuthorizationHandler, AccountAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, DocumentAuthorizationHandler>();
 
 var app = builder.Build();
 

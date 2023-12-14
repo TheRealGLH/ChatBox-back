@@ -39,7 +39,6 @@ class ProfileDatabaseConnectorMongo : IProfileDatabaseConnector
     public Profile Update(string characterHash, Profile profileToUpdate)
     {
         GetCollection();
-        profileToUpdate.Id = characterHash;
         _profileCollection.ReplaceOne(profile => profile.CharacterHash == characterHash, profileToUpdate);
         return profileToUpdate;
     }

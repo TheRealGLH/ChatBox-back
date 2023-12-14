@@ -30,6 +30,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 	};
 });
 
+builder.Services.Configure<MongoDatabaseSettings>(
+	builder.Configuration.GetSection("MongoDB"));
 builder.Services.Configure<RabbitMqSettings>(
 	builder.Configuration.GetSection("RabbitMqConfiguration"));
 

@@ -1,41 +1,35 @@
-name: Gateway Docker Push
+name: Gateway Service Docker Push
 
 on:
   push:
-    tags:        
-      - '*'  
+    tags:
+      - "*"
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set env
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-    - name: Test
-      run: |
-        echo $RELEASE_VERSION
-        echo ${{ env.RELEASE_VERSION }}
+      - uses: actions/checkout@v2
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Test
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}
 
-    
-    - uses: actions/checkout@v3
-    - name: Log in to Docker
-      run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-    
-#    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      working-directory: ./Gateway
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-gateway --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-gateway:${{ env.RELEASE_VERSION }}
+      - uses: actions/checkout@v3
+      - name: Log in to Docker
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
-#    - uses: actions/checkout@v3
-    - name: Push latest tag
-      working-directory: ./Gateway
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-gateway:latest
+      #    - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file DockerfileGateway --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-gatewayservice --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-gatewayservice:${{ env.RELEASE_VERSION }}
 
-#    - uses: actions/checkout@v3
-    - name: Push archival tag
-      working-directory: ./Gateway
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-gateway:${{ env.RELEASE_VERSION }}
+      #    - uses: actions/checkout@v3
+      - name: Push latest tag
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-gatewayservice:latest
+
+      #    - uses: actions/checkout@v3
+      - name: Push archival tag
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-gatewayservice:${{ env.RELEASE_VERSION }}

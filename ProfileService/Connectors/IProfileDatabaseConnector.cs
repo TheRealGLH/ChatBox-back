@@ -1,6 +1,6 @@
 using ProfileService.Models;
 
-interface IProfileDatabaseConnector
+public interface IProfileDatabaseConnector
 {
     public Profile Create(Profile profile);
     public Profile Read(string characterHash);

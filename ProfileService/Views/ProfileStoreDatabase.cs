@@ -4,23 +4,35 @@ namespace ProfileService.Views;
 
 public class ProfileStoreDatabase : IProfileStore
 {
+    IProfileDatabaseConnector _databaseConnector;
+
+    public ProfileStoreDatabase(IProfileDatabaseConnector profileDatabaseConnector)
+    {
+        this._databaseConnector = profileDatabaseConnector;
+    }
     public Profile AddProfile(Profile profile)
     {
-        throw new NotImplementedException();
+        return _databaseConnector.Create(profile);
     }
 
     public void DeleteProfile(string profileId)
     {
-        throw new NotImplementedException();
+        //We get our profile here to double check if we're not deleting something that doesn't exist
+        GetProfile(profileId);
+        _databaseConnector.Delete(profileId);
     }
 
     public Profile GetProfile(string profileId)
     {
-        throw new NotImplementedException();
+        Profile get = _databaseConnector.Read(profileId);
+        if (get != null) return get;
+        throw new KeyNotFoundException("The profile with ID: " + profileId + " does not exist");
     }
 
-    public Profile UpdateProfile(Profile profile, string profileId)
+    public Profile UpdateProfile(Profile updatedProfile, string profileId)
     {
-        throw new NotImplementedException();
+        Profile oldProfile = GetProfile(profileId);
+        if(updatedProfile != oldProfile) updatedProfile = _databaseConnector.Update(profileId, updatedProfile);
+        return updatedProfile;
     }
 }

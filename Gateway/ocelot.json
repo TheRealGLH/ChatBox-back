@@ -28,7 +28,7 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "avatar-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/avatar"
@@ -39,7 +39,7 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "bookmark-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/bookmark"
@@ -50,7 +50,7 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "profile-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/profile/{characterID}"
@@ -61,7 +61,7 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "report-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/report"

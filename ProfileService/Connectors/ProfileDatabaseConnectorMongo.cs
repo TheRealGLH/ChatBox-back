@@ -25,14 +25,14 @@ class ProfileDatabaseConnectorMongo : IProfileDatabaseConnector
     public void Delete(string characterHash)
     {
         GetCollection();
-        _profileCollection.DeleteOne(profile => profile.Id == characterHash);
+        _profileCollection.DeleteOne(profile => profile.CharacterHash == characterHash);
     }
 
     public Profile Read(string characterHash)
     {
         GetCollection();
         Profile query = _profileCollection.AsQueryable()
-            .Where(profile => profile.Id == characterHash).FirstOrDefault();
+            .Where(profile => profile.CharacterHash == characterHash).FirstOrDefault();
         return query;
     }
 
@@ -40,7 +40,7 @@ class ProfileDatabaseConnectorMongo : IProfileDatabaseConnector
     {
         GetCollection();
         profileToUpdate.Id = characterHash;
-        _profileCollection.ReplaceOne(profile => profile.Id == characterHash, profileToUpdate);
+        _profileCollection.ReplaceOne(profile => profile.CharacterHash == characterHash, profileToUpdate);
         return profileToUpdate;
     }
 

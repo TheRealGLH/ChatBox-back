@@ -1,34 +1,34 @@
 {
     "Routes": [
         {
-            "DownstreamPathTemplate": "/character/",
+            "DownstreamPathTemplate": "/character",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "character-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
-            "UpstreamPathTemplate": "/character/"
+            "UpstreamPathTemplate": "/character"
         },
         {
             "UpstreamPathTemplate": "/character/{characterID}",
             "DownstreamPathTemplate": "/character/{characterID}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
-                { 
-                    "Host": "character-service", 
-                    "Port": 80 
+                {
+                    "Host": "character-service",
+                    "Port": 8080
                 }
             ]
           },
         {
-            "DownstreamPathTemplate": "/avatar/",
+            "DownstreamPathTemplate": "/WeatherForecast",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "avatar-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/avatar"
@@ -39,21 +39,21 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "bookmark-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/bookmark"
         },
         {
-            "DownstreamPathTemplate": "/profile/",
+            "DownstreamPathTemplate": "/profile/{characterID}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "profile-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
-            "UpstreamPathTemplate": "/profile"
+            "UpstreamPathTemplate": "/profile/{characterID}"
         },
         {
             "DownstreamPathTemplate": "/report/",
@@ -61,7 +61,7 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "report-service",
-                    "Port": 80
+                    "Port": 8080
                 }
             ],
             "UpstreamPathTemplate": "/report"

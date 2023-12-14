@@ -1,13 +1,13 @@
-using CharacterService.Controllers;
-
 namespace CharacterService.Views;
 
+using CharacterService.Messaging;
 using CharacterService.Models;
 
 public interface ICharacterStore
 {
-    public String CreateCharacter(Character character);
+    public Character CreateCharacter(Character character);
     public Character GetCharacter(String charID);
+    public List<Character> GetAllUserCharacters(String uuid);
     public Character UpdateCharacter(Character character, String charID);
     public void DeleteCharacter(String charID);
 

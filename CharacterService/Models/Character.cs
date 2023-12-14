@@ -1,17 +1,29 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+using ChatBoxSharedObjects.Models;
 
 namespace CharacterService.Models;
 
-public class Character
+public class Character: StoredResource
 {
-    [BsonId]
-    public ObjectId Id { get; set; }
     public String CharacterName { get; set; }
-    public Gender Gender { get; set; }
-    public Character(String CharacterName, Gender gender)
+    public String Species { get; set; }
+    public String Pronouns { get; set; }
+    public String Bio { get; set; }
+
+    public Character(CharacterSubmission characterSubmission, String owner): base (owner)
     {
-        this.CharacterName = CharacterName;
-        this.Gender = gender;
+        this.CharacterName = characterSubmission.characterName;
+        this.Pronouns = characterSubmission.Pronouns;
+        this.Species = characterSubmission.Species;
+        this.Bio = characterSubmission.Bio;
+        this.owner = owner;
     }
+
+    public void Update(CharacterSubmission characterSubmission)
+    {
+        this.CharacterName = characterSubmission.characterName;
+        this.Pronouns = characterSubmission.Pronouns;
+        this.Species = characterSubmission.Species;
+        this.Bio = characterSubmission.Bio;
+    }
+
 }

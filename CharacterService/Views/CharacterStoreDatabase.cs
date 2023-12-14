@@ -1,41 +1,60 @@
 namespace CharacterService.Views;
 
+using System.Collections.Generic;
 using CharacterService.Connectors;
+using CharacterService.Messaging;
 using CharacterService.Models;
 using Microsoft.Extensions.Options;
+using ChatBoxSharedObjects.Messages;
+using ChatBoxSharedObjects.Security;
+using ChatBoxSharedObjects.Settings;
 
 public class CharacterStoreDatabase : ICharacterStore
 {
     ICharacterDatabaseConnector characterConnector;
+    IRabbitMqProducer rabbitMQProducer;
 
-    public CharacterStoreDatabase(IOptions<CharacterDatabaseSettings> characterDatabaseSettings){
+    public CharacterStoreDatabase(IOptions<MongoDatabaseSettings> characterDatabaseSettings, IRabbitMqProducer rabbitMqProducer)
+    {
         characterConnector = new CharacterDatabaseConnectorMongo(characterDatabaseSettings);
+        this.rabbitMQProducer = rabbitMqProducer;
     }
-    public String CreateCharacter(Character character)
+    public Character CreateCharacter(Character character)
     {
-        String characterHash = characterConnector.Add(character);
-        return characterHash;
-    }
-
-    public void DeleteCharacter(string charID)
-    {
-        GetCharacter(charID);
-        characterConnector.Delete(charID);
+        Character charAdded = characterConnector.Add(character);
+        rabbitMQProducer.SendCreationMessage(
+            new CharacterMessage(charAdded.Id, charAdded.owner, CharacterMessageType.CREATE
+            ));
+        return charAdded;
     }
 
-    public Character GetCharacter(string charID)
+    public void DeleteCharacter(string characterId)
     {
-        Character character = characterConnector.Get(charID);
+        GetCharacter(characterId);
+        characterConnector.Delete(characterId);
+        rabbitMQProducer.SendCreationMessage(
+    new CharacterMessage(characterId, "none", CharacterMessageType.DELETE
+    ));
+    }
+
+    public List<Character> GetAllUserCharacters(string uuid)
+    {
+        return characterConnector.GetAllUserCharacters(uuid);
+    }
+
+    public Character GetCharacter(string characterId)
+    {
+        Character character = characterConnector.Get(characterId);
         if (character != null) return character;
-        throw new KeyNotFoundException("The character with ID " + charID +" does not exist.");
+        throw new KeyNotFoundException("The character with ID " + characterId + " does not exist.");
     }
 
     public Character UpdateCharacter(Character updatedChar, string charID)
     {
         Character oldCharacter = GetCharacter(charID);
-        if(oldCharacter != updatedChar)
+        if (oldCharacter != updatedChar)
         {
-            characterConnector.Update(charID,updatedChar);
+            characterConnector.Update(charID, updatedChar);
         }
         return updatedChar;
     }

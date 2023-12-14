@@ -10,7 +10,7 @@ public class ProfileStoreDatabase : IProfileStore
 
     public ProfileStoreDatabase(IOptions<MongoDatabaseSettings> characterDatabaseSettings)
     {
-        this._databaseConnector = new ProfileDatabaseConnectorMongo();
+        this._databaseConnector = new ProfileDatabaseConnectorMongo(characterDatabaseSettings.Value);
     }
     public Profile AddProfile(Profile profile)
     {

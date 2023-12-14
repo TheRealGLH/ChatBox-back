@@ -39,7 +39,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.Configure<MongoDatabaseSettings>(
-	builder.Configuration.GetSection("CharacterAPI"));
+	builder.Configuration.GetSection("MongoDB"));
 builder.Services.Configure<RabbitMqSettings>(
 	builder.Configuration.GetSection("RabbitMqConfiguration"));
 builder.Services.AddSingleton<IAuthorizationHandler, AccountAuthorizationHandler>();

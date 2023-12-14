@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProfileService.Models;
@@ -31,9 +32,28 @@ public class ProfileController : ControllerBase
     [Route("{characterID}")]
     [ProducesResponseType(typeof(Profile), 200)]
     [ProducesResponseType(typeof(string), 404)]
-    public Profile ReadProfile(String characterID)
+    public IActionResult ReadProfile(String characterID)
     {
-        return _profileStore.GetProfile(characterID);
+        Profile profile;
+        try
+        {
+            profile = _profileStore.GetProfile(characterID);
+            profile.Anonymize(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound("The profile with ID: " + characterID + " does not exist.");
+        }
+        var result = _authorizationService.AuthorizeAsync(User, "RolePolicy");
+        if (result.IsCompletedSuccessfully) return Ok(profile);
+        else if (User.Identity.IsAuthenticated)
+        {
+            return new ForbidResult();
+        }
+        else
+        {
+            return new ChallengeResult("You're not authorized to view this profile.");
+        }
     }
 
     [HttpPut]

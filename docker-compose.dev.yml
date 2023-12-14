@@ -3,8 +3,8 @@ version: "3.8"
 services:
   gateway-service:
     build:
-      context: ./Gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileGateway
     ports:
       - "8080:80"
   chatmessenger-service:
@@ -23,8 +23,8 @@ services:
       - ./MessageService/db/.env
   character-service:
     build:
-      context: ./CharacterService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileCharacter
     environment:
       - DATABASE_MOCK=false
   character-database:
@@ -48,16 +48,50 @@ services:
       - 8082:8081
   avatar-service:
     build:
-      context: ./AvatarService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileAvatar
   bookmark-service:
     build:
-      context: ./BookmarkService
+      context: .
+      dockerfile: DockerfileBookmark
   profile-service:
     build:
-      context: ./ProfileService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileProfile
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+  profile-database:
+    image: mongo:7.0.3
+    volumes:
+      - ./ProfileService/db/data:/data/db:delegated
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    env_file:
+      - ./ProfileService/db/.env
   report-service:
     build:
-      context: ./ReportService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DockerfileReport
+  rabbitmq:
+    image: rabbitmq:3.11.26-management
+    ports:
+    #management plugin port
+      - 8081:15672
+      - 5672:5672
+    #restart: always
+    volumes:
+      - ./RabbitMQ/config:/etc/rabbitmq
+    entrypoint: [ "bash", "-c", "rabbitmq-plugins enable --offline rabbitmq_management && rabbitmq-server"]
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+

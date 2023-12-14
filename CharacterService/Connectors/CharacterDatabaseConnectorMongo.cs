@@ -16,7 +16,7 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
     {
         MongoConnectionString = characterDatabaseSettings.Value.ConnectionString;
         mongoDBName = characterDatabaseSettings.Value.DatabaseName;
-        mongoCharCollectionName = characterDatabaseSettings.Value.CharacterCollectionName;
+        mongoCharCollectionName = characterDatabaseSettings.Value.CollectionName;
     }
     public Character Add(Character character)
     {
@@ -63,9 +63,9 @@ class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
         var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
         ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
 
-        // Establish the connection to MongoDB and get the restaurants database
+        // Establish the connection to MongoDB
         MongoClient mongoClient = new MongoClient(MongoConnectionString);
-        IMongoDatabase restaurantsDatabase = mongoClient.GetDatabase(mongoDBName);
-        _characterCollection = restaurantsDatabase.GetCollection<Character>(mongoCharCollectionName);
+        IMongoDatabase database = mongoClient.GetDatabase(mongoDBName);
+        _characterCollection = database.GetCollection<Character>(mongoCharCollectionName);
     }
 }

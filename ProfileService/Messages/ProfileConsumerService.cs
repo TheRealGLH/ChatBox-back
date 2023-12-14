@@ -26,7 +26,21 @@ class ProfileConsumerService : RabbitMqConsumerService
         try
         {
             IncomingMessage = JsonSerializer.Deserialize<CharacterMessage>(text);
-            if (IncomingMessage != null) this._profileStore.AddProfile(new Profile(IncomingMessage.CharId, IncomingMessage.OwnerId));
+            if (IncomingMessage != null)
+            {
+                switch (IncomingMessage.MessageType)
+                {
+                    case CharacterMessageType.CREATE:
+                    this._profileStore.AddProfile(new Profile(IncomingMessage.CharId, IncomingMessage.OwnerId));
+                        break;
+                    case CharacterMessageType.DELETE:
+                    this._profileStore.DeleteProfile(IncomingMessage.CharId);
+                    break;
+                    default:
+                    //We'll see :^)
+                        break;
+                }
+            }
             else throw new JsonException("Deserialized message " + eventArgs.Body.ToString() + " was comehow null?");
         }
         catch (JsonException e)

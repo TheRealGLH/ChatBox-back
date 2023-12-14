@@ -1,3 +1,5 @@
+using ChatBoxSharedObjects.Settings;
+using Microsoft.Extensions.Options;
 using ProfileService.Models;
 
 namespace ProfileService.Views;
@@ -6,9 +8,9 @@ public class ProfileStoreDatabase : IProfileStore
 {
     IProfileDatabaseConnector _databaseConnector;
 
-    public ProfileStoreDatabase(IProfileDatabaseConnector profileDatabaseConnector)
+    public ProfileStoreDatabase(IOptions<MongoDatabaseSettings> characterDatabaseSettings)
     {
-        this._databaseConnector = profileDatabaseConnector;
+        this._databaseConnector = new ProfileDatabaseConnectorMongo();
     }
     public Profile AddProfile(Profile profile)
     {

@@ -57,7 +57,30 @@ services:
     build:
       context: ./ProfileService
       dockerfile: Dockerfile
+  profile-database:
+    image: mongo:7.0.3
+    volumes:
+      - ./ProfileService/db/data:/data/db:delegated
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    env_file:
+      - ./ProfileService/db/.env
   report-service:
     build:
       context: ./ReportService
       dockerfile: Dockerfile
+  queue:
+    image: rabbitmq:3.11.26-management
+    ports:
+    #management plugin port
+      - 8081:15672
+      - 5672:5672
+    #restart: always
+    volumes:
+      - ./RabbitMQ/config:/etc/rabbitmq
+    entrypoint: [ "bash", "-c", "rabbitmq-plugins enable --offline rabbitmq_management && rabbitmq-server"]
+

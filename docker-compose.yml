@@ -64,6 +64,13 @@ services:
       start_period: 40s
     env_file:
       - ./ProfileService/db/.env
+  profile-database-monitor:
+    restart: always
+    image: mongo-express:latest
+    env_file:
+      - ./ProfileService/db/.env
+    ports:
+      - 8083:8081
   report-service:
     image: martijnd95/chatbox-reportservice:latest
   rabbitmq:

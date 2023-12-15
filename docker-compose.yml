@@ -1,28 +1,30 @@
 version: "3.8"
+name: chatbox-backend-dev
 
 services:
   gateway-service:
-    image: martijnd95/chatbox-gateway:latest
+    image: martijnd95/chatbox-gatewayservice:latest
     ports:
-      - "80:80"
+      - "8080:80"
   chatmessenger-service:
     image: martijnd95/chatbox-messageservice:latest
   chatmessenger-database:
     image: mysql:8.2.0-oracle
-    volumes: 
+    volumes:
       - ./MessageService/db/data:/var/lib/mysql:delegated
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 5s
       retries: 3
     env_file:
       - ./MessageService/db/.env
   character-service:
     image: martijnd95/chatbox-characterservice:latest
+    environment:
+      - DATABASE_MOCK=false
   character-database:
-    image: mongo:7.0.3 
-    restart: always
-    volumes: 
+    image: mongo:7.0.3
+    volumes:
       - ./CharacterService/db/data:/data/db:delegated
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
@@ -32,11 +34,55 @@ services:
       start_period: 40s
     env_file:
       - ./CharacterService/db/.env
+  character-database-monitor:
+    restart: always
+    image: mongo-express:latest
+    env_file:
+      - ./CharacterService/db/.env
+    ports:
+      - 8082:8081
   avatar-service:
     image: martijnd95/chatbox-avatarservice:latest
   bookmark-service:
     image: martijnd95/chatbox-bookmarkservice:latest
   profile-service:
     image: martijnd95/chatbox-profileservice:latest
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+  profile-database:
+    image: mongo:7.0.3
+    volumes:
+      - ./ProfileService/db/data:/data/db:delegated
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    env_file:
+      - ./ProfileService/db/.env
   report-service:
     image: martijnd95/chatbox-reportservice:latest
+  rabbitmq:
+    image: rabbitmq:3.11.26-management
+    ports:
+      #management plugin port
+      - 8081:15672
+      - 5672:5672
+    #restart: always
+    volumes:
+      - ./RabbitMQ/config:/etc/rabbitmq
+    entrypoint:
+      [
+        "bash",
+        "-c",
+        "rabbitmq-plugins enable --offline rabbitmq_management && rabbitmq-server"
+      ]
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5

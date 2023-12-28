@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
+using Microsoft.AspNetCore.Authorization;
 namespace ChatService.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class WebSocketController : ControllerBase
 {
     [Route("/ws")]

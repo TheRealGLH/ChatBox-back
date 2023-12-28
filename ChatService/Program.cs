@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Invio.Extensions.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
 	options.Authority = "https://securetoken.google.com/chatbox-b88f3";
+	options.AddQueryStringAuthentication();
 	options.TokenValidationParameters = new TokenValidationParameters
 	{
 		ValidateAudience = true,

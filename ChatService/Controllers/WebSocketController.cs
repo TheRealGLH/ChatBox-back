@@ -32,7 +32,6 @@ public class WebSocketController : ControllerBase
     {
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
-            //TODO: Add client to list
             using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
             _logger.LogDebug("Connected " + webSocket.ToString() + " " + HttpContext.TraceIdentifier);
             connectedClients.Add(webSocket, new ClientMessager(webSocket));
@@ -55,22 +54,15 @@ public class WebSocketController : ControllerBase
         while (!receiveResult.CloseStatus.HasValue)
         {
             HandleIncomingJson(DecodeByteArray(buffer, receiveResult.Count), connectedClients[webSocket]);
-            /* await webSocket.SendAsync(
-                 new ArraySegment<byte>(buffer, 0, receiveResult.Count),
-                 receiveResult.MessageType,
-                 receiveResult.EndOfMessage,
-                 CancellationToken.None);*/
-
             receiveResult = await webSocket.ReceiveAsync(
                 new ArraySegment<byte>(buffer), CancellationToken.None);
         }
 
         await webSocket.CloseAsync(
-            //TODO: Remove client from list
             receiveResult.CloseStatus.Value,
             receiveResult.CloseStatusDescription,
             CancellationToken.None);
-            Close(webSocket);
+        Close(webSocket);
     }
 
     private void Close(WebSocket webSocket)
@@ -89,7 +81,6 @@ public class WebSocketController : ControllerBase
         _logger.LogTrace("JSON from:" + User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         if (json != null)
         {
-            //TODO: Pass client object to ChatServer
             ClientMessage msg = JsonSerializer.Deserialize<ClientMessage>(json);
             switch (msg.MessageType)
             {

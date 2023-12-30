@@ -5,7 +5,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
-class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
+public class CharacterDatabaseConnectorMongo : ICharacterDatabaseConnector
 {
     private static IMongoCollection<Character> _characterCollection;
     //TODO: Make this an environment value

@@ -38,14 +38,17 @@ public class ChatServer : IServerMessager
 
     public void RollDice(IClientMessager client, uint count, uint sides, uint addition)
     {
-        int outcome = 0;
-        for (int i = 0; i < count; i++)
+        if (connectedCharacters.ContainsKey(client))
         {
-            outcome += random.Next(1, (int)sides);
+            int outcome = 0;
+            for (int i = 0; i < count; i++)
+            {
+                outcome += random.Next(1, (int)sides);
+            }
+            outcome += (int)addition;
+            ServerMessageDice serverMessage = new ServerMessageDice(sides, count, (int)addition, outcome, connectedCharacters[client].charName);
+            this._rabbitMqProducer.SendCreationMessage(serverMessage);
         }
-        outcome += (int)addition;
-        ServerMessageDice serverMessage = new ServerMessageDice(sides, count, (int)addition, outcome, connectedCharacters[client].charName);
-        this._rabbitMqProducer.SendCreationMessage(serverMessage);
     }
 
     public void SendPing(IClientMessager client)
@@ -55,8 +58,11 @@ public class ChatServer : IServerMessager
 
     public void SendText(IClientMessager client, string content)
     {
-        ServerMessageText messageText = new ServerMessageText(content, connectedCharacters[client].charName);
-        _rabbitMqProducer.SendCreationMessage(messageText);
+        if (connectedCharacters.ContainsKey(client))
+        {
+            ServerMessageText messageText = new ServerMessageText(content, connectedCharacters[client].charName);
+            _rabbitMqProducer.SendCreationMessage(messageText);
+        }
     }
 
     public void SignIn(IClientMessager client, string characterId, string userId)

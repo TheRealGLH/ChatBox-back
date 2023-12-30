@@ -70,12 +70,13 @@ public class WebSocketController : ControllerBase
             receiveResult.CloseStatus.Value,
             receiveResult.CloseStatusDescription,
             CancellationToken.None);
+            Close(webSocket);
     }
 
     private void Close(WebSocket webSocket)
     {
         _logger.LogDebug("Disconnected" + webSocket.ToString() + " " + HttpContext.TraceIdentifier);
-
+        connectedClients.Remove(webSocket);
     }
 
     private string DecodeByteArray(byte[] bytes, int count)

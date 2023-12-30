@@ -70,6 +70,7 @@ public class WebSocketController : ControllerBase
     {
         _logger.LogDebug("Disconnected" + webSocket.ToString() + " " + HttpContext.TraceIdentifier);
         connectedClients.Remove(webSocket);
+        chatServer.SignOut(connectedClients[webSocket]);
     }
 
     private string DecodeByteArray(byte[] bytes, int count)

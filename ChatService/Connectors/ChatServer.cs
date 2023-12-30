@@ -45,7 +45,7 @@ public class ChatServer : IServerMessager
 
     public void SignOut(IClientMessager client)
     {
-        throw new NotImplementedException();
+        connectedCharacters.Remove(client);
     }
 }
 

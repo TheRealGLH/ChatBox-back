@@ -10,8 +10,13 @@ using SocketMessages.Server;
 public class ChatConsumerService : RabbitMqConsumerService
 {
     IServerMessager _chatServer;
+    const string queueNameChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    static Random random = new Random();
+    const int QueueLength = 16;
     public ChatConsumerService(IRabbitMqService rabbitMqService, IOptions<RabbitMqSettings> options, IServerMessager chatServer) : base(rabbitMqService, options)
     {
+        _configuration.QueueName = _configuration.QueueName + new string(Enumerable.Repeat(queueNameChars, QueueLength)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
         _chatServer = chatServer;
     }
     public override void OnMessageReceived(BasicDeliverEventArgs eventArgs)
@@ -27,15 +32,15 @@ public class ChatConsumerService : RabbitMqConsumerService
                 switch (IncomingMessage.MessageType)
                 {
                     case ServerMessageType.Text:
-                    ServerMessageText messageText = JsonSerializer.Deserialize<ServerMessageText>(text);
-                    _chatServer.ReceiveText(messageText.content,messageText.speaker);
+                        ServerMessageText messageText = JsonSerializer.Deserialize<ServerMessageText>(text);
+                        _chatServer.ReceiveText(messageText.content, messageText.speaker);
                         break;
                     case ServerMessageType.DiceResult:
-                    ServerMessageDice messageDice = JsonSerializer.Deserialize<ServerMessageDice>(text);
-                    _chatServer.ReceiveDice(messageDice.amount,messageDice.sides,messageDice.addition,messageDice.result,messageDice.charName);
-                    break;
+                        ServerMessageDice messageDice = JsonSerializer.Deserialize<ServerMessageDice>(text);
+                        _chatServer.ReceiveDice(messageDice.amount, messageDice.sides, messageDice.addition, messageDice.result, messageDice.charName);
+                        break;
                     default:
-                    //We'll see :^)
+                        //We'll see :^)
                         break;
                 }
             }

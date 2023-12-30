@@ -8,5 +8,5 @@ public interface IClientMessager
 
     public void ReceiveText(string content, string characterName);
 
-    public void ReceiveDiceResult(uint sides, uint amount, int addition, int outcome);
+    public void ReceiveDiceResult(uint sides, uint amount, int addition, int outcome, string characterName);
 }

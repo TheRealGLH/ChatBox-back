@@ -14,6 +14,23 @@ public class ChatServer : IServerMessager
     {
         this._characterDatabaseConnector = characterDatabaseConnector;
     }
+
+    public void ReceiveDice(uint count, uint sides, int addition, int outcome, string charName)
+    {
+        foreach (KeyValuePair<IClientMessager, ConnectedCharacter> entry in connectedCharacters)
+        {
+            entry.Key.ReceiveDiceResult(sides, count, addition, outcome, charName);
+        }
+    }
+
+    public void ReceiveText(string content, string charName)
+    {
+        foreach (KeyValuePair<IClientMessager, ConnectedCharacter> entry in connectedCharacters)
+        {
+            entry.Key.ReceiveText(content, charName);
+        }
+    }
+
     public void RollDice(IClientMessager client, uint count, uint sides, uint addition)
     {
         throw new NotImplementedException();
@@ -38,7 +55,7 @@ public class ChatServer : IServerMessager
         }
         else
         {
-            connectedCharacters.Add(client,new ConnectedCharacter(character.Id,character.owner));
+            connectedCharacters.Add(client, new ConnectedCharacter(character.Id, character.owner));
             client.ReceiveLoginStatus(true);
         }
     }

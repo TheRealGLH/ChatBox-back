@@ -1,0 +1,4 @@
+{"MessageType": "Ping"}
+
+
+{"MessageType": "SignIn", "characterId": "{{ _.character_id }}"}

@@ -15,7 +15,7 @@ namespace ChatService.Connectors
             this._webSocketClient = webSocketClient;
         }
 
-        public void ReceiveDiceResult(uint sides, uint amount, int addition, int outcome)
+        public void ReceiveDiceResult(uint sides, uint amount, int addition, int outcome, string charName)
         {
             throw new NotImplementedException();
         }

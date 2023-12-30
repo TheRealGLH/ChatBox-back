@@ -22,10 +22,10 @@ public class WebSocketController : ControllerBase
     private ILogger<WebSocketController> _logger;
     private IServerMessager chatServer;
 
-    public WebSocketController(ILogger<WebSocketController> logger, ICharacterDatabaseConnector characterDatabaseConnector)
+    public WebSocketController(ILogger<WebSocketController> logger, IServerMessager chatServer)
     {
         _logger = logger;
-        this.chatServer = new ChatServer(characterDatabaseConnector);
+        this.chatServer = chatServer;
     }
 
     [Route("/ws")]

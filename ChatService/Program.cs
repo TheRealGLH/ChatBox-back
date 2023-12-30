@@ -16,6 +16,8 @@ builder.Services.AddSingleton<ICharacterDatabaseConnector, CharacterDatabaseConn
 builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 builder.Services.AddSingleton<IServerMessager, ChatServer>();
 builder.Services.AddSingleton<IRabbitMqProducer, RabbitMqProducer>();
+builder.Services.AddSingleton<IRabbitMqConsumerService, ChatConsumerService>();
+builder.Services.AddHostedService<ConsumerHostedService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -35,7 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.Configure<MongoDatabaseSettings>(
 	builder.Configuration.GetSection("MongoDB"));
-builder.Services.Configure<RabbitMqSettingsChat>(
+builder.Services.Configure<RabbitMqSettings>(
 	builder.Configuration.GetSection("RabbitMqConfiguration"));
 
 var app = builder.Build();

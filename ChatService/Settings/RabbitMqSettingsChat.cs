@@ -1,6 +1,6 @@
 using ChatBoxSharedObjects.Settings;
 
-class RabbitMqSettingsChat : RabbitMqSettings
+public class RabbitMqSettingsChat
 {
     const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     static Random random = new Random();

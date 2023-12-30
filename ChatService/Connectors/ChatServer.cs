@@ -32,7 +32,7 @@ public class ChatServer : IServerMessager
     public void SignIn(IClientMessager client, string characterId, string userId)
     {
         Character character = _characterDatabaseConnector.Get(characterId);
-        if (character == null | character.owner != userId)
+        if (character == null || character.owner != userId)
         {
             client.ReceiveLoginStatus(false);
         }

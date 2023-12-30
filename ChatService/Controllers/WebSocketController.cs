@@ -9,6 +9,7 @@ using ChatService.Interfaces;
 using ChatService.Connectors;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR.Protocol;
+using ChatBoxSharedObjects.Connectors;
 namespace ChatService.Controllers;
 
 [ApiController]
@@ -21,10 +22,10 @@ public class WebSocketController : ControllerBase
     private ILogger<WebSocketController> _logger;
     private IServerMessager chatServer;
 
-    public WebSocketController(ILogger<WebSocketController> logger)
+    public WebSocketController(ILogger<WebSocketController> logger, ICharacterDatabaseConnector characterDatabaseConnector)
     {
         _logger = logger;
-        this.chatServer = new ChatServer();
+        this.chatServer = new ChatServer(characterDatabaseConnector);
     }
 
     [Route("/ws")]

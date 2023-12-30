@@ -2,19 +2,24 @@ using ChatService.Interfaces;
 
 namespace ChatService.Connectors;
 
-class ChatServer : ServerMessager
+class ChatServer : IServerMessager
 {
-    public void RollDice(uint count, uint sides, uint addition)
+    public void RollDice(IClientMessager client, uint count, uint sides, uint addition)
     {
         throw new NotImplementedException();
     }
 
-    public void SendPing()
+    public void SendPing(IClientMessager client)
+    {
+        client.ReceivePong();
+    }
+
+    public void SendText(IClientMessager client, string content)
     {
         throw new NotImplementedException();
     }
 
-    public void SendText(string content)
+    public void SignIn(IClientMessager client, string characterId, string userId)
     {
         throw new NotImplementedException();
     }

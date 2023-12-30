@@ -1,4 +1,6 @@
-class ServerMessagePong
+namespace SocketMessages.Server;
+
+public class ServerMessagePong : ServerMessage
 {
-    
+
 }

@@ -36,7 +36,7 @@ public class ChatServer : IServerMessager
         }
     }
 
-    public void RollDice(IClientMessager client, uint count, uint sides, uint addition)
+    public void RollDice(IClientMessager client, uint count, uint sides, int addition)
     {
         if (connectedCharacters.ContainsKey(client))
         {
@@ -45,8 +45,8 @@ public class ChatServer : IServerMessager
             {
                 outcome += random.Next(1, (int)sides);
             }
-            outcome += (int)addition;
-            ServerMessageDice serverMessage = new ServerMessageDice(sides, count, (int)addition, outcome, connectedCharacters[client].charName);
+            outcome += addition;
+            ServerMessageDice serverMessage = new ServerMessageDice(sides, count, addition, outcome, connectedCharacters[client].charName);
             this._rabbitMqProducer.SendCreationMessage(serverMessage);
         }
     }

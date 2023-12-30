@@ -95,6 +95,12 @@ public class WebSocketController : ControllerBase
                     chatServer.SignIn(client, messageSignIn.characterId, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                     break;
                 case ClientMessageType.Text:
+                    ClientMessageText messageText = JsonSerializer.Deserialize<ClientMessageText>(json);
+                    chatServer.SendText(client, messageText.MessageContent);
+                    break;
+                case ClientMessageType.Dice:
+                    ClientMessageDice messageDice = JsonSerializer.Deserialize<ClientMessageDice>(json);
+                    chatServer.RollDice(client,messageDice.amount,messageDice.sides,messageDice.addition);
                     break;
 
             }

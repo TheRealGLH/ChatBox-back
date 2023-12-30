@@ -12,7 +12,7 @@ public interface IServerMessager
 
     public void SignOut(IClientMessager client);
 
-    public void RollDice(IClientMessager client, uint count, uint sides, uint addition);
+    public void RollDice(IClientMessager client, uint count, uint sides, int addition);
 
     public void ReceiveDice(uint count, uint sides, int addition, int outcome, string charName);
 

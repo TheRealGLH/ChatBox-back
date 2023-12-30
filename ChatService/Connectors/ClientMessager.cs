@@ -17,7 +17,9 @@ namespace ChatService.Connectors
 
         public void ReceiveDiceResult(uint sides, uint amount, int addition, int outcome, string charName)
         {
-            throw new NotImplementedException();
+            ServerMessageDice serverMessage = new ServerMessageDice(sides, amount, addition, outcome, charName);
+            string json = JsonSerializer.Serialize(serverMessage);
+            SendText(json);
         }
 
         public void ReceiveLoginStatus(bool success)
@@ -36,18 +38,20 @@ namespace ChatService.Connectors
 
         public void ReceiveText(string content, string characterName)
         {
-            throw new NotImplementedException();
+            ServerMessageText serverMessage = new ServerMessageText(content, characterName);
+            string json = JsonSerializer.Serialize(serverMessage);
+            SendText(json);
         }
 
 
         void SendText(string json)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(json);
-             _webSocketClient.SendAsync(
-                 new ArraySegment<byte>(buffer, 0, buffer.Length),
-                 WebSocketMessageType.Text,
-                 true,
-                 CancellationToken.None);
+            _webSocketClient.SendAsync(
+                new ArraySegment<byte>(buffer, 0, buffer.Length),
+                WebSocketMessageType.Text,
+                true,
+                CancellationToken.None);
         }
     }
 }

@@ -1,18 +1,23 @@
+using CharacterService.Messaging;
 using ChatBoxSharedObjects.Connectors;
 using ChatBoxSharedObjects.Models;
 using ChatService.Interfaces;
 using Microsoft.IdentityModel.Tokens;
+using SocketMessages.Server;
 
 namespace ChatService.Connectors;
 
 public class ChatServer : IServerMessager
 {
     private readonly ICharacterDatabaseConnector _characterDatabaseConnector;
+    private readonly IRabbitMqProducer _rabbitMqProducer;
+    private Random random = new Random();
     Dictionary<IClientMessager, ConnectedCharacter> connectedCharacters = new Dictionary<IClientMessager, ConnectedCharacter>();
 
-    public ChatServer(ICharacterDatabaseConnector characterDatabaseConnector)
+    public ChatServer(ICharacterDatabaseConnector characterDatabaseConnector, IRabbitMqProducer rabbitMqProducer)
     {
         this._characterDatabaseConnector = characterDatabaseConnector;
+        this._rabbitMqProducer = rabbitMqProducer;
     }
 
     public void ReceiveDice(uint count, uint sides, int addition, int outcome, string charName)
@@ -33,7 +38,14 @@ public class ChatServer : IServerMessager
 
     public void RollDice(IClientMessager client, uint count, uint sides, uint addition)
     {
-        throw new NotImplementedException();
+        int outcome = 0;
+        for (int i = 0; i < count; i++)
+        {
+            outcome += random.Next(1, (int)sides);
+        }
+        outcome += (int)addition;
+        ServerMessageDice serverMessage = new ServerMessageDice(sides, count, (int)addition, outcome, connectedCharacters[client].charName);
+        this._rabbitMqProducer.SendCreationMessage(serverMessage);
     }
 
     public void SendPing(IClientMessager client)
@@ -43,7 +55,8 @@ public class ChatServer : IServerMessager
 
     public void SendText(IClientMessager client, string content)
     {
-        throw new NotImplementedException();
+        ServerMessageText messageText = new ServerMessageText(content, connectedCharacters[client].charName);
+        _rabbitMqProducer.SendCreationMessage(messageText);
     }
 
     public void SignIn(IClientMessager client, string characterId, string userId)

@@ -12,6 +12,13 @@ namespace ChatService.Controllers;
 [Authorize]
 public class WebSocketController : ControllerBase
 {
+    private ILogger<WebSocketController> _logger;
+
+    public WebSocketController(ILogger<WebSocketController> logger)
+    {
+        _logger = logger;
+    }
+    
     [Route("/ws")]
     public async Task Get()
     {
@@ -22,11 +29,12 @@ public class WebSocketController : ControllerBase
         }
         else
         {
+            _logger.LogInformation("Non-websocket request received from: "+HttpContext.TraceIdentifier);
             HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         }
     }
 
-    private static async Task DecodeStream(WebSocket webSocket)
+    private async Task DecodeStream(WebSocket webSocket)
     {
         var buffer = new byte[1024 * 4];
         var receiveResult = await webSocket.ReceiveAsync(
@@ -34,7 +42,7 @@ public class WebSocketController : ControllerBase
 
         while (!receiveResult.CloseStatus.HasValue)
         {
-            HandleIncomingJson(DecodeByteArray(buffer,receiveResult.Count));
+            HandleIncomingJson(DecodeByteArray(buffer, receiveResult.Count));
             await webSocket.SendAsync(
                 new ArraySegment<byte>(buffer, 0, receiveResult.Count),
                 receiveResult.MessageType,
@@ -51,20 +59,27 @@ public class WebSocketController : ControllerBase
             CancellationToken.None);
     }
 
-    private static string DecodeByteArray(byte[] bytes, int count)
+    private string DecodeByteArray(byte[] bytes, int count)
     {
-        return Encoding.UTF8.GetString(bytes,0,count);
+        return Encoding.UTF8.GetString(bytes, 0, count);
     }
 
-    static void HandleIncomingJson(string json)
+    void HandleIncomingJson(string json)
     {
-        ClientMessage msg = JsonSerializer.Deserialize<ClientMessage>(json);
-        switch (msg.MessageType)
+        if (json != null)
         {
-            case ClientMessageType.Ping:
-            Console.WriteLine("Ping.");
-            break;
+            ClientMessage msg = JsonSerializer.Deserialize<ClientMessage>(json);
+            switch (msg.MessageType)
+            {
+                case ClientMessageType.Ping:
+                    _logger.Log(LogLevel.Debug,"Ping.");
+                    break;
 
+            }
+        }
+        else
+        {
+            _logger.LogInformation("Null json received");
         }
     }
 }

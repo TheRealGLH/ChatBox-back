@@ -32,7 +32,7 @@ public class ChatServer : IServerMessager
     {
         foreach (KeyValuePair<IClientMessager, ConnectedCharacter> entry in connectedCharacters)
         {
-            entry.Key.ReceiveText(content, charName);
+            entry.Key.ReceiveText(content, entry.Value.charName);
         }
     }
 
@@ -74,7 +74,7 @@ public class ChatServer : IServerMessager
         }
         else
         {
-            connectedCharacters.Add(client, new ConnectedCharacter(character.Id, character.owner));
+            connectedCharacters.Add(client, new ConnectedCharacter(character.Id, character.CharacterName));
             client.ReceiveLoginStatus(true);
         }
     }

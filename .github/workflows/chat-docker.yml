@@ -24,15 +24,12 @@ jobs:
 
       #    - uses: actions/checkout@v3
       - name: Build the Docker image
-        working-directory: ./MessageService
-        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-messageservice --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-messageservice:${{ env.RELEASE_VERSION }}
+        run: docker build . --file DockerfileChat --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-chatservice --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-chatservice:${{ env.RELEASE_VERSION }}
 
       #    - uses: actions/checkout@v3
       - name: Push latest tag
-        working-directory: ./MessageService
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-messageservice:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-chatservice:latest
 
       #    - uses: actions/checkout@v3
       - name: Push archival tag
-        working-directory: ./MessageService
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-messageservice:${{ env.RELEASE_VERSION }}
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-chatservice:${{ env.RELEASE_VERSION }}

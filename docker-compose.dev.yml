@@ -8,20 +8,10 @@ services:
       dockerfile: DockerfileGateway
     ports:
       - "8080:80"
-  chatmessenger-service:
+  chat-service:
     build:
-      context: ./MessageService
-      dockerfile: Dockerfile
-  chatmessenger-database:
-    image: mysql:8.2.0-oracle
-    volumes: 
-      - ./MessageService/db/data:/var/lib/mysql:delegated
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 5s
-      retries: 3
-    env_file:
-      - ./MessageService/db/.env
+      context: .
+      dockerfile: DockerfileChat
   character-service:
     build:
       context: .

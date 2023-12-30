@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:80"
   chatmessenger-service:
-    image: martijnd95/chatbox-messageservice:latest
+    image: martijnd95/chatbox-chatservice:latest
   chatmessenger-database:
     image: mysql:8.2.0-oracle
     volumes:

@@ -19,12 +19,12 @@ public class WebSocketController : ControllerBase
 
     private Dictionary<WebSocket, IClientMessager> connectedClients = new Dictionary<WebSocket, IClientMessager>();
     private ILogger<WebSocketController> _logger;
-    private IServerMessager serverMessager;
+    private IServerMessager chatServer;
 
     public WebSocketController(ILogger<WebSocketController> logger)
     {
         _logger = logger;
-        this.serverMessager = new ChatServer();
+        this.chatServer = new ChatServer();
     }
 
     [Route("/ws")]
@@ -86,11 +86,11 @@ public class WebSocketController : ControllerBase
             {
                 case ClientMessageType.Ping:
                     _logger.Log(LogLevel.Debug, "Ping.");
-                    serverMessager.SendPing(client);
+                    chatServer.SendPing(client);
                     break;
                 case ClientMessageType.SignIn:
                     ClientMessageSignIn messageSignIn = JsonSerializer.Deserialize<ClientMessageSignIn>(json);
-                    //serverMessager.SignIn(messageSignIn.characterId, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    chatServer.SignIn(client, messageSignIn.characterId, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                     break;
                 case ClientMessageType.Text:
                     break;

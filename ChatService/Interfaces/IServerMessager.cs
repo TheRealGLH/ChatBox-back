@@ -8,5 +8,7 @@ interface IServerMessager
 
     public void SignIn(IClientMessager client, string characterId, string userId);
 
+    public void SignOut(IClientMessager client);
+
     public void RollDice(IClientMessager client, uint count, uint sides, uint addition);
 }

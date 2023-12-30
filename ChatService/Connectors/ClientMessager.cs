@@ -22,24 +22,32 @@ namespace ChatService.Connectors
 
         public void ReceiveLoginStatus(bool success)
         {
-            throw new NotImplementedException();
+            ServerMessageLogin serverMessage = new ServerMessageLogin(success);
+            string json = JsonSerializer.Serialize(serverMessage);
+            SendText(json);
         }
 
         public void ReceivePong()
         {
             ServerMessagePong pong = new ServerMessagePong();
             string json = JsonSerializer.Serialize(pong);
+            SendText(json);
+        }
+
+        public void ReceiveText(string content, string characterName)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        void SendText(string json)
+        {
             byte[] buffer = Encoding.UTF8.GetBytes(json);
              _webSocketClient.SendAsync(
                  new ArraySegment<byte>(buffer, 0, buffer.Length),
                  WebSocketMessageType.Text,
                  true,
                  CancellationToken.None);
-        }
-
-        public void ReceiveText(string content, string characterName)
-        {
-            throw new NotImplementedException();
         }
     }
 }

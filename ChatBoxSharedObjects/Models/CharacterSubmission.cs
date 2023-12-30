@@ -1,4 +1,4 @@
-namespace CharacterService.Models;
+namespace ChatBoxSharedObjects.Models;
 
 public class CharacterSubmission
 {

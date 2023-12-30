@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Invio.Extensions.Authentication.JwtBearer;
-
+using ChatBoxSharedObjects.Connectors;
+using ChatBoxSharedObjects.Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSingleton<ICharacterDatabaseConnector, CharacterDatabaseConnectorMongo>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -24,6 +25,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 		ValidateLifetime = true,
 	};
 });
+
+builder.Services.Configure<MongoDatabaseSettings>(
+	builder.Configuration.GetSection("MongoDB"));
 
 var app = builder.Build();
 

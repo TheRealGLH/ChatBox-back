@@ -1,6 +1,6 @@
-namespace CharacterService.Connectors;
+namespace ChatBoxSharedObjects.Connectors;
 
-using CharacterService.Models;
+using ChatBoxSharedObjects.Models;
 
 public interface ICharacterDatabaseConnector
 {

@@ -13,16 +13,6 @@ services:
       - rabbitmq
     links:
       - rabbitmq
-  chatmessenger-database:
-    image: mysql:8.2.0-oracle
-    volumes:
-      - ./MessageService/db/data:/var/lib/mysql:delegated
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      timeout: 5s
-      retries: 3
-    env_file:
-      - ./MessageService/db/.env
   character-service:
     image: martijnd95/chatbox-characterservice:latest
     environment:

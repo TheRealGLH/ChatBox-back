@@ -2,9 +2,9 @@ namespace SocketMessages.Client;
 
 public class ClientMessageDice : ClientMessage
 {
-    public uint Sides;
-    public uint Amount;
-    public int Addition;
+    public uint Sides {get; set; }
+    public uint Amount {get; set; }
+    public int Addition {get; set; }
 
 
     public bool Validate()

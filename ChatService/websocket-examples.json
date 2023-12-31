@@ -1,4 +1,6 @@
 {"MessageType": "Ping"}
 
 
-{"MessageType": "SignIn", "characterId": "{{ _.character_id }}"}
+{"MessageType": "SignIn", "CharacterId": "{{ _.character_id }}"}
+
+{"MessageType": "Dice", "Sides": "20", "Amount": "2", "Addition": "2"}

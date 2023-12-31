@@ -92,15 +92,18 @@ public class WebSocketController : ControllerBase
                     break;
                 case ClientMessageType.SignIn:
                     ClientMessageSignIn messageSignIn = JsonSerializer.Deserialize<ClientMessageSignIn>(json);
-                    chatServer.SignIn(client, messageSignIn.characterId, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    if(messageSignIn.Validate()) chatServer.SignIn(client, messageSignIn.characterId, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                    else _logger.LogInformation("Invalid json sent from " + HttpContext.TraceIdentifier);
                     break;
                 case ClientMessageType.Text:
                     ClientMessageText messageText = JsonSerializer.Deserialize<ClientMessageText>(json);
-                    chatServer.SendText(client, messageText.MessageContent);
+                    if (messageText.Validate()) chatServer.SendText(client, messageText.MessageContent);
+                    else _logger.LogInformation("Invalid json sent from " + HttpContext.TraceIdentifier);
                     break;
                 case ClientMessageType.Dice:
                     ClientMessageDice messageDice = JsonSerializer.Deserialize<ClientMessageDice>(json);
-                    chatServer.RollDice(client,messageDice.amount,messageDice.sides,messageDice.addition);
+                    if(messageDice.Validate())chatServer.RollDice(client,messageDice.amount,messageDice.sides,messageDice.addition);
+                    else _logger.LogInformation("Invalid json sent from " + HttpContext.TraceIdentifier);
                     break;
 
             }

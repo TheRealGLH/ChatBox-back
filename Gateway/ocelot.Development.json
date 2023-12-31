@@ -68,12 +68,12 @@
         },
         {
             "UpstreamPathTemplate": "/chat",
-            "DownstreamPathTemplate": "/chat",
+            "DownstreamPathTemplate": "/ws",
             "DownstreamScheme": "ws",
             "DownstreamHostAndPorts": [
                 {
-                    "Host": "chatmessenger-service",
-                    "Port": 8095
+                    "Host": "localhost",
+                    "Port": 5086
                 }
             ]
         }

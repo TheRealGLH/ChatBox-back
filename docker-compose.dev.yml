@@ -12,6 +12,11 @@ services:
     build:
       context: .
       dockerfile: DockerfileChat
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
   character-service:
     build:
       context: .

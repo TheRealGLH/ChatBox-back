@@ -6,8 +6,13 @@ services:
     image: martijnd95/chatbox-gatewayservice:latest
     ports:
       - "8080:80"
-  chatmessenger-service:
+  chat-service:
     image: martijnd95/chatbox-chatservice:latest
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
   chatmessenger-database:
     image: mysql:8.2.0-oracle
     volumes:

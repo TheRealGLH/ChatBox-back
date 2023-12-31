@@ -2,19 +2,19 @@ namespace SocketMessages.Server;
 
 public class ServerMessageDice : ServerMessage
 {
-    public uint sides { get; set; }
-    public uint amount { get; set; }
-    public int addition { get; set; }
-    public int result { get; set; }
-    public string charName { get; set; }
+    public uint Sides { get; set; }
+    public uint Amount { get; set; }
+    public int Addition { get; set; }
+    public int Result { get; set; }
+    public string CharacterName { get; set; }
 
-    public ServerMessageDice(uint sides, uint amount, int addition, int result, string charName)
+    public ServerMessageDice(uint Sides, uint Amount, int Addition, int Result, string CharacterName)
     {
         this.MessageType = ServerMessageType.DiceResult;
-        this.sides = sides;
-        this.amount = amount;
-        this.addition = addition;
-        this.result = result;
-        this.charName = charName;
+        this.Sides = Sides;
+        this.Amount = Amount;
+        this.Addition = Addition;
+        this.Result = Result;
+        this.CharacterName = CharacterName;
     }
 }

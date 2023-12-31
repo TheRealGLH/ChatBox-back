@@ -33,11 +33,11 @@ public class ChatConsumerService : RabbitMqConsumerService
                 {
                     case ServerMessageType.Text:
                         ServerMessageText messageText = JsonSerializer.Deserialize<ServerMessageText>(text);
-                        _chatServer.ReceiveText(messageText.content, messageText.speaker);
+                        _chatServer.ReceiveText(messageText.MessageContent, messageText.CharacterName);
                         break;
                     case ServerMessageType.DiceResult:
                         ServerMessageDice messageDice = JsonSerializer.Deserialize<ServerMessageDice>(text);
-                        _chatServer.ReceiveDice(messageDice.amount, messageDice.sides, messageDice.addition, messageDice.result, messageDice.charName);
+                        _chatServer.ReceiveDice(messageDice.Amount, messageDice.Sides, messageDice.Addition, messageDice.Result, messageDice.CharacterName);
                         break;
                     default:
                         //We'll see :^)

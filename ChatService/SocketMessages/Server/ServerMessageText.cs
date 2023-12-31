@@ -2,12 +2,12 @@ namespace SocketMessages.Server;
 
 public class ServerMessageText : ServerMessage
 {
-    public string content { get; set; }
-    public string speaker { get; set; }
-    public ServerMessageText(string content, string speaker)
+    public string MessageContent { get; set; }
+    public string CharacterName { get; set; }
+    public ServerMessageText(string MessageContent, string CharacterName)
     {
         this.MessageType = ServerMessageType.Text;
-        this.content = content;
-        this.speaker = speaker;
+        this.MessageContent = MessageContent;
+        this.CharacterName = CharacterName;
     }
 }

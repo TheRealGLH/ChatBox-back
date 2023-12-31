@@ -2,10 +2,10 @@ namespace SocketMessages.Server;
 
 class ServerMessageLogin : ServerMessage
 {
-    public bool success { get; set; }
-    public ServerMessageLogin(bool success)
+    public bool Success { get; set; }
+    public ServerMessageLogin(bool Success)
     {
         this.MessageType = ServerMessageType.SignedIn;
-        this.success = success;
+        this.Success = Success;
     }
 }

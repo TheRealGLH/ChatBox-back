@@ -2,13 +2,13 @@ namespace SocketMessages.Client;
 
 public class ClientMessageDice : ClientMessage
 {
-    public uint sides;
-    public uint amount;
-    public int addition;
+    public uint Sides;
+    public uint Amount;
+    public int Addition;
 
 
     public bool Validate()
     {
-        return (sides > 0 || amount > 0);
+        return (Sides > 0 || Amount > 0);
     }
 }

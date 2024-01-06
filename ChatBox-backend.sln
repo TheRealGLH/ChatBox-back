@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvatarService", "AvatarServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatService", "ChatService\ChatService.csproj", "{B877F1B4-07CA-4385-A9BA-B0F466E912FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.csproj", "{C110E7E4-239E-4FE8-B14E-B6A35A26C387}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{B877F1B4-07CA-4385-A9BA-B0F466E912FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B877F1B4-07CA-4385-A9BA-B0F466E912FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B877F1B4-07CA-4385-A9BA-B0F466E912FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C110E7E4-239E-4FE8-B14E-B6A35A26C387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C110E7E4-239E-4FE8-B14E-B6A35A26C387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C110E7E4-239E-4FE8-B14E-B6A35A26C387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C110E7E4-239E-4FE8-B14E-B6A35A26C387}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

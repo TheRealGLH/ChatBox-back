@@ -32,7 +32,7 @@ public class ChatServer : IServerMessager
     {
         foreach (KeyValuePair<IClientMessager, ConnectedCharacter> entry in connectedCharacters)
         {
-            entry.Key.ReceiveText(content, entry.Value.charName);
+            entry.Key.ReceiveText(content, charName);
         }
     }
 

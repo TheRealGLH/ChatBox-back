@@ -9,7 +9,14 @@
                     "Port": 8080
                 }
             ],
-            "UpstreamPathTemplate": "/character"
+            "UpstreamPathTemplate": "/character",
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "15s",
+                "PeriodTimespan": 10,
+                "Limit": 5
+              }
         },
         {
             "UpstreamPathTemplate": "/character/{characterID}",
@@ -20,7 +27,14 @@
                     "Host": "character-service",
                     "Port": 8080
                 }
-            ]
+            ],
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "15s",
+                "PeriodTimespan": 10,
+                "Limit": 5
+              }
           },
         {
             "DownstreamPathTemplate": "/WeatherForecast",
@@ -31,7 +45,14 @@
                     "Port": 8080
                 }
             ],
-            "UpstreamPathTemplate": "/avatar"
+            "UpstreamPathTemplate": "/avatar",
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "15s",
+                "PeriodTimespan": 10,
+                "Limit": 5
+              }
         },
         {
             "DownstreamPathTemplate": "/bookmark/",
@@ -42,7 +63,14 @@
                     "Port": 8080
                 }
             ],
-            "UpstreamPathTemplate": "/bookmark"
+            "UpstreamPathTemplate": "/bookmark",
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "15s",
+                "PeriodTimespan": 10,
+                "Limit": 5
+              }
         },
         {
             "DownstreamPathTemplate": "/profile/{characterID}",
@@ -53,7 +81,14 @@
                     "Port": 8080
                 }
             ],
-            "UpstreamPathTemplate": "/profile/{characterID}"
+            "UpstreamPathTemplate": "/profile/{characterID}",
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "15s",
+                "PeriodTimespan": 10,
+                "Limit": 5
+              }
         },
         {
             "DownstreamPathTemplate": "/report/",
@@ -64,7 +99,14 @@
                     "Port": 8080
                 }
             ],
-            "UpstreamPathTemplate": "/report"
+            "UpstreamPathTemplate": "/report",
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "15s",
+                "PeriodTimespan": 10,
+                "Limit": 5
+              }
         },
         {
             "UpstreamPathTemplate": "/chat",
@@ -75,10 +117,23 @@
                     "Host": "chat-service",
                     "Port": 8080
                 }
-            ]
+            ],
+            "RateLimitOptions": {
+                "ClientWhitelist": [],
+                "EnableRateLimiting": true,
+                "Period": "15s",
+                "PeriodTimespan": 10,
+                "Limit": 5
+              }
         }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:5000"
+        "BaseUrl": "http://localhost:5000",
+        "RateLimitOptions": {
+            "DisableRateLimitHeaders": false,
+            "QuotaExceededMessage": "Customize Tips!",
+            "HttpStatusCode": 123,
+            "ClientIdHeader": "Test"
+          }
     }
 }

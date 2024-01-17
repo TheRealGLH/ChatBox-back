@@ -1,4 +1,4 @@
-name: Character Service Docker Push
+name: Character Service Deployment
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   dockerize:
+    name: Dockerize
     runs-on: ubuntu-latest
 
     steps:
@@ -35,6 +36,7 @@ jobs:
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-characterservice:${{ env.RELEASE_VERSION }}
 
   azure_update_tag:
+    name: Update tag on Azure Kubernetes Service
     runs-on: ubuntu-latest
 
     steps:
@@ -48,7 +50,7 @@ jobs:
       - run: az -v
 
       # Logs in with your Azure credentials
-      - name: Azure login
+      - name: Azure Login
         uses: azure/login@v1.4.6
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -66,11 +68,10 @@ jobs:
         continue-on-error: true
         run: kubectl delete secret db-secrets
 
-      - name: Configure secrets
+      - name: Configure Secrets
         run: kubectl create secret generic db-secrets --from-literal=CONNSTRING_CHARACTER="${{ secrets.DB_CONNSTRING_CHARACTER }}"
 
-      - run: ls -i
-      - name: Deploys application
+      - name: Deploys Service to AKS
         uses: Azure/k8s-deploy@v4
         with:
           manifests: |
@@ -80,5 +81,5 @@ jobs:
           imagepullsecrets: |
             ${{ vars.PROJECT_NAME }}
 
-      - name: get pods
+      - name: Check Pods
         run: kubectl get pod,service

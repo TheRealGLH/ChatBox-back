@@ -39,9 +39,11 @@ jobs:
 
     steps:
       # Checks out the repository this file is in
-      - uses: actions/checkout@v3
+      - name: Check out code
+        uses: actions/checkout@v4
 
-      - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az -v
+      - name: Install Azure CLI (for ACT)
+        run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az -v
 
       - run: az -v
 
@@ -50,3 +52,28 @@ jobs:
         uses: azure/login@v1.4.6
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Connect to K8S context
+        id: context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ vars.AZURE_RESOURCE_GROUP }}
+          cluster-name: ${{ vars.AZURE_CLUSTER_NAME }}
+
+      - run: curl -LO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+      - name: Reset secrets
+        continue-on-error: true
+        run: kubectl delete secret db-secrets
+
+      - run: ls -i
+      - name: Deploys application
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: |
+            k8s/character/character-deployment.yaml
+          imagepullsecrets: |
+            ${{ vars.PROJECT_NAME }}
+
+      - name: get pods
+        run: kubectl get pod,service

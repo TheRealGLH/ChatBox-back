@@ -1,4 +1,4 @@
-name: Chat Service .NET Test
+name: Super-Linter
 
 on:
   push:

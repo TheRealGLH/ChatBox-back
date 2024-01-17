@@ -66,12 +66,17 @@ jobs:
         continue-on-error: true
         run: kubectl delete secret db-secrets
 
+      - name: Configure secrets
+        run: kubectl create secret generic db-secrets --from-literal=CONNSTRING_CHARACTER="${{ secrets.DB_CONNSTRING_CHARACTER }}"
+
       - run: ls -i
       - name: Deploys application
         uses: Azure/k8s-deploy@v4
         with:
           manifests: |
             k8s/character/character-deployment.yaml
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-characterservice:${{ env.RELEASE_VERSION }}
           imagepullsecrets: |
             ${{ vars.PROJECT_NAME }}
 

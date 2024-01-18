@@ -1,14 +1,15 @@
-namespace CharacterService.Views;
 
 using System.Collections.Generic;
-using CharacterService.Connectors;
 using CharacterService.Messaging;
 using CharacterService.Models;
 using Microsoft.Extensions.Options;
 using ChatBoxSharedObjects.Messages;
 using ChatBoxSharedObjects.Security;
 using ChatBoxSharedObjects.Settings;
+using ChatBoxSharedObjects.Connectors;
+using ChatBoxSharedObjects.Models;
 
+namespace CharacterService.Views;
 public class CharacterStoreDatabase : ICharacterStore
 {
     ICharacterDatabaseConnector characterConnector;

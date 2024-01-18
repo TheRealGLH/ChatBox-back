@@ -1,13 +1,8 @@
 using System.Security.Claims;
-using CharacterService.Messaging;
-using CharacterService.Models;
 using CharacterService.Views;
-using ChatBoxSharedObjects.Security;
-using ChatBoxSharedObjects.Settings;
+using ChatBoxSharedObjects.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace CharacterService.Controllers;
 

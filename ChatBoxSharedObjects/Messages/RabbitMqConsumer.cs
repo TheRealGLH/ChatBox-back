@@ -9,7 +9,7 @@ public abstract class RabbitMqConsumerService : IRabbitMqConsumerService, IDispo
 {
     private readonly IModel _model;
     private readonly IConnection _connection;
-    private readonly RabbitMqSettings _configuration;
+    public readonly RabbitMqSettings _configuration;
     public RabbitMqConsumerService(IRabbitMqService rabbitMqService, IOptions<RabbitMqSettings> options)
     {
         _configuration = options.Value;

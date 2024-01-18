@@ -44,8 +44,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Install Azure CLI (for ACT)
-        run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az -v
+      # Uncomment this if running in the Act CLI
+      #- name: Install Azure CLI (for ACT)
+      #  run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az -v
 
       - run: az -v
 
@@ -62,7 +63,8 @@ jobs:
           resource-group: ${{ vars.AZURE_RESOURCE_GROUP }}
           cluster-name: ${{ vars.AZURE_CLUSTER_NAME }}
 
-      - run: curl -LO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      # Uncomment this if running in the Act CLI
+      #- run: curl -LO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
       - name: Reset secrets
         continue-on-error: true

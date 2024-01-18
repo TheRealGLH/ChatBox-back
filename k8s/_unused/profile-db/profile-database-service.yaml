@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: profile-database
+spec:
+  selector:
+    io.kompose.service: profile-database
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

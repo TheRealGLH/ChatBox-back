@@ -1,4 +1,4 @@
-name: Profile Service Docker Push
+name: Profile Service Deployment
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
       - "*"
 
 jobs:
-  build:
+  dockerize:
+    name: Dockerize
     runs-on: ubuntu-latest
 
     steps:
@@ -24,12 +25,63 @@ jobs:
 
       #    - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build . --file DockerfileProfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-profileservice --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-profileservice:${{ env.RELEASE_VERSION }}
+        run: docker build . --file DockerfileProfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-characterservice --tag ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-characterservice:${{ env.RELEASE_VERSION }}
 
       #    - uses: actions/checkout@v3
       - name: Push latest tag
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-profileservice:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-characterservice:latest
 
       #    - uses: actions/checkout@v3
       - name: Push archival tag
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-profileservice:${{ env.RELEASE_VERSION }}
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-characterservice:${{ env.RELEASE_VERSION }}
+
+  azure_update_tag:
+    name: Update tag on Azure Kubernetes Service
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks out the repository this file is in
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # Uncomment this if running in the Act CLI
+      #- name: Install Azure CLI (for ACT)
+      #  run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash && az -v
+
+      - run: az -v
+
+      # Logs in with your Azure credentials
+      - name: Azure Login
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Connect to K8S context
+        id: context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ vars.AZURE_RESOURCE_GROUP }}
+          cluster-name: ${{ vars.AZURE_CLUSTER_NAME }}
+
+      # Uncomment this if running in the Act CLI
+      #- run: curl -LO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+      - name: Reset secrets
+        continue-on-error: true
+        run: kubectl delete secret db-secrets
+
+      - name: Configure Secrets
+        run: kubectl create secret generic db-secrets --from-literal=CONNSTRING_PROFILE="${{ secrets.DB_CONNSTRING_PROFILE }}"
+
+      - name: Deploys Service to AKS
+        uses: Azure/k8s-deploy@v4
+        with:
+          manifests: |
+            k8s/character/character-deployment.yaml
+          images: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/chatbox-characterservice:${{ env.RELEASE_VERSION }}
+          imagepullsecrets: |
+            ${{ vars.PROJECT_NAME }}
+
+      - name: Check Pods
+        run: kubectl get pod,service

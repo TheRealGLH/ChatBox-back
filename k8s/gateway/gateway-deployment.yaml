@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  labels:
+    app: gateway-service
+    kind: chatbox-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+#      volumes:
+#      - name: gateway-config
+#        configMap:
+#        name: gateway-config-volume
+      containers:
+      - env:
+            - name: DOTNET_ENVIRONMENT
+              value: Staging
+            - name: Logging__LogLevel__Microsoft.AspNetCore
+              value: trace
+            - name: Logging__LogLevel__Default
+              value: trace
+              #Linux doesn't like it when we port bind to <1024 w/o root permissions :^)
+            - name: ASPNETCORE_URLS
+              value: http://+:5000
+        name: gateway-service
+        image: martijnd95/chatbox-gatewayservice:v0.5a.2
+        ports:
+        - containerPort: 5000
+#        volumeMounts:
+#        - name: gateway-config-volume
+#          mountPath: /app
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 250m

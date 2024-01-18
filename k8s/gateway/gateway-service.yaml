@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-resource-group: MC_ChatboxKubeResourcegroup_ChatboxAKSCluster_westeurope
+    service.beta.kubernetes.io/azure-pip-name: ChatboxPublicIP
+    #service.beta.kubernetes.io/azure-dns-label-name: chatboxapiaks
+spec:
+  selector:
+    app: gateway
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer

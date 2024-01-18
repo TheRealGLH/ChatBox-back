@@ -1,0 +1,94 @@
+apiVersion: v1
+data:
+  appsettings.json: "{\r\n  \"Logging\": {\r\n    \"LogLevel\": {\r\n      \"Default\":
+    \"Information\",\r\n      \"Microsoft.AspNetCore\": \"Warning\"\r\n    }\r\n  },\r\n
+    \ \"AllowedHosts\": \"*\"\r\n}\r\n"
+  ocelot.json: |-
+    {
+        "Routes": [
+            {
+                "DownstreamPathTemplate": "/character",
+                "DownstreamScheme": "http",
+                "DownstreamHostAndPorts": [
+                    {
+                        "Host": "character-service",
+                        "Port": 8080
+                    }
+                ],
+                "UpstreamPathTemplate": "/character"
+            },
+            {
+                "UpstreamPathTemplate": "/character/{characterID}",
+                "DownstreamPathTemplate": "/character/{characterID}",
+                "DownstreamScheme": "http",
+                "DownstreamHostAndPorts": [
+                    {
+                    "Host": "character-service",
+                        "Port": 8080
+                    }
+                ]
+              },
+            {
+                "DownstreamPathTemplate": "/WeatherForecast",
+                "DownstreamScheme": "http",
+                "DownstreamHostAndPorts": [
+                    {
+                        "Host": "avatar-service",
+                        "Port": 8080
+                    }
+                ],
+                "UpstreamPathTemplate": "/avatar"
+            },
+            {
+                "DownstreamPathTemplate": "/bookmark/",
+                "DownstreamScheme": "http",
+                "DownstreamHostAndPorts": [
+                    {
+                        "Host": "bookmark-service",
+                        "Port": 8080
+                    }
+                ],
+                "UpstreamPathTemplate": "/bookmark"
+            },
+            {
+                "DownstreamPathTemplate": "/profile/{characterID}",
+                "DownstreamScheme": "http",
+                "DownstreamHostAndPorts": [
+                    {
+                        "Host": "profile-service",
+                        "Port": 8080
+                    }
+                ],
+                "UpstreamPathTemplate": "/profile/{characterID}"
+            },
+            {
+                "DownstreamPathTemplate": "/report/",
+                "DownstreamScheme": "http",
+                "DownstreamHostAndPorts": [
+                    {
+                        "Host": "report-service",
+                        "Port": 8080
+                    }
+                ],
+                "UpstreamPathTemplate": "/report"
+            },
+            {
+                "UpstreamPathTemplate": "/chat",
+                "DownstreamPathTemplate": "/chat",
+                "DownstreamScheme": "ws",
+                "DownstreamHostAndPorts": [
+                    {
+                        "Host": "chatmessenger-service",
+                        "Port": 8095
+                    }
+                ]
+            }
+        ],
+        "GlobalConfiguration": {
+            "BaseUrl": "http://localhost:5000"
+        }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: gateway-config

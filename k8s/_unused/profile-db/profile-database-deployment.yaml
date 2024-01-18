@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: profile-database
+  name: profile-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: profile-database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/chatbox-backend-default: "true"
+        io.kompose.service: profile-database
+    spec:
+      containers:
+        - env:
+            - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+              value: 'root'
+            - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+              value: 'example'
+            - name: ME_CONFIG_MONGODB_SERVER
+              value: profile-database
+            - name: MONGODB_DB
+              value: profile-database
+            - name: MONGODB_PASSWORD
+              value: access123!
+            - name: MONGODB_USER
+              value: profile-service
+            - name: MONGO_INITDB_DATABASE
+              value: employees
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: example
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: root
+            - name: MONGO_INIT_PWD
+              value: access123!
+            - name: MONGO_INIT_USERNAME
+              value: profile-service
+          image: mongo:7.0.3
+          livenessProbe:
+            exec:
+              command:
+                - echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+            failureThreshold: 3
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            timeoutSeconds: 10
+          name: profile-database
+          resources: {}
+          volumeMounts:
+            - mountPath: /data/db
+              name: profile-database-claim0
+      restartPolicy: Always
+      volumes:
+        - name: profile-database-claim0
+          persistentVolumeClaim:
+            claimName: profile-database-claim0
+status: {}
